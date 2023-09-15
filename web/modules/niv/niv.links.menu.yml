@@ -1,0 +1,6 @@
+niv.settings_form:
+  title: niv
+  description: Configure niv.
+  parent: system.admin_config_system
+  route_name: niv.settings_form
+  weight: 10

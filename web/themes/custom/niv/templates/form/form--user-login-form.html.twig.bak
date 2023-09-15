@@ -1,0 +1,11 @@
+<div class="row">
+<div class="col-sm-12 col-lg-6 blue_bg">
+  Azaad
+</div>
+<div class="col-sm-12 col-lg-6">
+	<div>Register</div>
+  <form {{ attributes }} >
+  {{ children }}
+  </form>
+</div>
+</div>

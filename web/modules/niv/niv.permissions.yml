@@ -1,0 +1,4 @@
+administer niv configuration:
+  title: 'Administer niv configuration'
+  description: 'Optional description.'
+  restrict access: true

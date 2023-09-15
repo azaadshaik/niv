@@ -1,0 +1,15 @@
+niv.example:
+  path: '/niv/example'
+  defaults:
+    _title: 'Example'
+    _controller: '\Drupal\niv\Controller\NivController::build'
+  requirements:
+    _permission: 'access content'
+
+niv.settings_form:
+  path: '/admin/config/system/niv'
+  defaults:
+    _title: 'niv settings'
+    _form: 'Drupal\niv\Form\SettingsForm'
+  requirements:
+    _permission: 'administer niv configuration'

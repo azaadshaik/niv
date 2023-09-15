@@ -1,0 +1,25 @@
+name: NIV
+type: theme
+description: 'Custom theme for NIV'
+package: Core
+
+core_version_requirement: ^8.8 || ^9
+project: 'niv'
+
+
+libraries:
+  - niv/global
+  
+  
+base theme: bootstrap5
+
+regions:
+  header: Header
+  nav_branding: 'Navigation branding region'
+  nav_main: 'Main navigation region'
+  nav_additional: 'Additional navigation region (eg search form, social icons, etc)'
+  breadcrumb: Breadcrumbs
+  content: 'Main content'
+  sidebar_first: 'Sidebar first'
+  sidebar_second: 'Sidebar second'
+  footer: Footer

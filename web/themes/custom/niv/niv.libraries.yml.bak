@@ -1,0 +1,10 @@
+global-styling:
+  version: VERSION
+  css:
+    theme:
+      css/niv.css: {}
+      
+global-scripts:
+  version: VERSION
+  js: 
+    js/niv.js: {}  
