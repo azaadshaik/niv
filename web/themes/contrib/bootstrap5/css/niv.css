@@ -62,3 +62,33 @@ header .navbar-expand-lg.bg-dark{background-color: #13388e!important;}
   
   .view-content .table > thead > tr{background-color:#cfe2ff;}
   .view-header{margin-bottom:20px;}
+.form-rightSide .layout .form-wrapper{width: 100%;}
+  .layout .form-wrapper{width: 46%;
+    float: left;
+    margin: 0 1%;}
+  
+  .js-form-type-date > input{display: block;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    appearance: none;
+    border-radius: 0.375rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;}
+    .form-type-date{width: 100%;}
+.form-actions {
+      text-align: right;
+      display: inline-block;
+      width: 48%;
+  }
+  .profile .block-layout-builder,.node__content .field--label-above{width:25%;
+    float: left;
+    margin: 0 1%;}
+    
+.form-rightSide .form-actions{width: 100%;
+  margin: 0 8px;text-align: left;}
