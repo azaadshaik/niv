@@ -1,3 +1,4 @@
+*{ box-sizing: border-box;}
 .blue_bg {
   background: url(images/login_bg.jpg);
     background-size: auto;
@@ -41,7 +42,7 @@
 }
 
 .path-user #block-niv-content.block-system-main-block{box-shadow: 4px 7px 4px 0px rgba(0,0,0,0.2);}
-.path-user .region-content{margin:100px 80px !important;}
+.path-user .region-content{margin:100px 140px !important;}
 .user-logged-in.path-user .region-content{margin:100px 10px !important}
 .user-logged-in.path-user #block-niv-content.block-system-main-block{box-shadow:none;} 
   /* box-shadow: 4px 7px 4px 0px rgba(0,0,0,0.2);   */
@@ -70,7 +71,6 @@ header .navbar-expand-lg.bg-dark{background-color: #13388e!important;}
   
   .view-content .table > thead > tr{background-color:#cfe2ff;}
   .view-header{margin-bottom:20px;}
-.form-rightSide .layout .form-wrapper{width: 100%;}
   .layout .form-wrapper{width: 46%;
     float: left;
     margin: 0 1%;}
@@ -101,7 +101,8 @@ header .navbar-expand-lg.bg-dark{background-color: #13388e!important;}
 .form-rightSide .form-actions{width: 100%;
   margin: 0 8px;text-align: left;}
 
-  #edit-account.js-form-wrapper.form-wrapper{width: 100%;}
+  .form-rightSide .layout .form-wrapper{width: 95%;}
+  #edit-account.js-form-wrapper.form-wrapper{width: 95%;}
   #edit-account .form-item-mail,#edit-account .password-parent,#edit-account .confirm-parent,#edit-pass--description.description{width: 46%;
     float: left;
     margin: 0 1%;}
