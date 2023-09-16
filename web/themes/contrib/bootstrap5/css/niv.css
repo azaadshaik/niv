@@ -28,7 +28,10 @@
 /*custom css here */
 .form-leftSide{font-size: 2.5rem;
   color: #ffffff;
-  text-align: center;padding: 10%;}
+  text-align: center;padding: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;}
 .form-rightSide{    background-color: #eaeaea;
   height: 100%;
   min-height: 350px;
@@ -36,6 +39,11 @@
 #block-niv-content.block-system-main-block{border-radius: 5px;
   overflow: hidden;
 }
+
+.path-user #block-niv-content.block-system-main-block{box-shadow: 4px 7px 4px 0px rgba(0,0,0,0.2);}
+.path-user .region-content{margin:100px 80px !important;}
+.user-logged-in.path-user .region-content{margin:100px 10px !important}
+.user-logged-in.path-user #block-niv-content.block-system-main-block{box-shadow:none;} 
   /* box-shadow: 4px 7px 4px 0px rgba(0,0,0,0.2);   */
 header .navbar-expand-lg.bg-dark{background-color: #13388e!important;}
 /* navigation css here */
@@ -108,3 +116,13 @@ header .navbar-expand-lg.bg-dark{background-color: #13388e!important;}
       .form-rightSide #edit-account .password-parent, 
       .form-rightSide #edit-account .confirm-parent, 
       .form-rightSide #edit-pass--description.description{width: 100%;}
+
+      .row.registration-links a{text-decoration: none;
+        background: #13388e;
+        padding: 5px 30px;
+        color: #ffffff;
+    border-radius: 3px;
+    }
+    .row.registration-links{text-align: center;
+      display: inline-flex;
+      margin: 0 20%;}
