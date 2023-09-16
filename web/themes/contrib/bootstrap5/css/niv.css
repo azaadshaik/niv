@@ -5,7 +5,7 @@
 }
 .region-content {
     padding: 0 0.5rem;
-    margin: 100px !important;
+    margin: 100px 10px !important;
 }
 .region-sidebar-first{
  padding: 0 0.5rem;
@@ -39,8 +39,26 @@
   /* box-shadow: 4px 7px 4px 0px rgba(0,0,0,0.2);   */
 header .navbar-expand-lg.bg-dark{background-color: #13388e!important;}
 /* navigation css here */
-#block-nivadminmenu .navbar-nav .nav-item{background-color: #13388e;
+/* #block-nivadminmenu .navbar-nav .nav-link,
+#block-test .navbar-nav .nav-link{background-color: #13388e;
   margin-bottom: 5px;
   color: #ffffff;
-  padding: 5px 10px;}
-  #block-nivadminmenu .navbar-nav .nav-item:hover{background-color: #3f51b5;border-radius: 3px;;}
+  padding:8px 10px;}
+  #block-nivadminmenu .navbar-nav .nav-link:hover,
+  #block-test .navbar-nav .nav-link:hover,
+  #block-test .navbar-nav .nav-link.active{background-color: #3f51b5;border-radius: 3px;;} */
+
+  .region-sidebar-first .navbar-nav .nav-link{background-color: #13388e;
+    margin-bottom: 5px;
+    color: #ffffff;
+    padding:8px 10px;border-radius: 3px;}
+    .region-sidebar-first .navbar-nav .nav-link:hover,
+    .region-sidebar-first .navbar-nav .nav-link.active{background-color: #3f51b5;;}
+  .view-header > a{background-color: #13388e;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 5px 11px;
+    margin: 0 10px;}
+  
+  .view-content .table > thead > tr{background-color:#cfe2ff;}
+  .view-header{margin-bottom:20px;}
