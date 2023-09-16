@@ -15,6 +15,7 @@ use Drupal\views\Plugin\views\query\QueryPluginBase;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Logger;
 use Drupal\Core\Session\AccountInterface;
+
 /**
  * @file
  * Primary module hooks for niv module.
@@ -33,16 +34,99 @@ use Drupal\Core\Session\AccountInterface;
 function niv_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
 
   
- 
   switch ($form_id) {
+	  
 
     case 'user_register_form':
-      $new_validation = '_niv_form_user_register_form_validate';
-      array_splice($form['#validate'], 3, 0, $new_validation);
+	$roles = \Drupal::currentUser()->getRoles();
+	
+	
+	 if (in_array('niv_admin', $roles)){
+		$form['#theme'] = 'org_admin_reg';
+		$form['actions']['submit']['#submit'][1] = '_saveuser_nologin';
+		//unset($form['actions']['submit']['#submit'][1]);
+		//dump($form);
+	//die;
+	 }
+	 else if(in_array('anonymous', $roles)){
+		 $form['#theme'] = 'parent_teacher_reg';
+	 }
+	
+    //  $new_validation = '_niv_form_user_register_form_validate';
+     // array_splice($form['#validate'], 3, 0, $new_validation);
     break; 
    
   }
  
+}
+
+//overriding user module save() as it is logging the user after registration
+function _saveuser_nologin(array $form, FormStateInterface $form_state){
+	
+	//dump($form_state->getValues());
+	//die;
+	 $account = Drupal\user\Entity\User::create();
+	 $username = substr(str_shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789"), -5);
+	 $account->setUsername($form_state->getValue('mail'));
+    $pass = $account->getPassword();
+    $admin = $form_state->getValue('administer_users');
+    $notify = !$form_state->isValueEmpty('notify');
+	$account->set("field_name", $form_state->getValue('field_name'));
+	$account->set("field_organization",$form_state->getValue('field_organization') );
+	$account->set('field_email',$form_state->getValue('mail'));
+	$account->setEmail($form_state->getValue('mail'));
+	$account->addRole('organization_admin');
+$account->enforceIsNew();
+$account->activate();
+
+
+    // Save has no return value so this cannot be tested.
+    // Assume save has gone through correctly.
+    $account->save();
+
+    $form_state->set('user', $account);
+    $form_state->setValue('uid', $account->id());
+
+   // $this->logger('user')->notice('New user: %name %email.', ['%name' => $form_state->getValue('name'), '%email' => '<' . $form_state->getValue('mail') . '>', 'type' => $account->toLink($this->t('Edit'), 'edit-form')->toString()]);
+
+    // Add plain text password into user account to generate mail tokens.
+    $account->password = $pass;
+
+    // New administrative account without notification.
+    if ($admin && !$notify) {
+      //$this->messenger()->addStatus($this->t('Created a new user account for <a href=":url">%name</a>. No email has been sent.', [':url' => $account->toUrl()->toString(), '%name' => $username]));
+    }
+    // No email verification required; log in user immediately.
+    elseif (!$admin && !\Drupal::config('user.settings')->get('verify_mail') && $account->isActive()) {
+      _user_mail_notify('register_no_approval_required', $account);
+      //user_login_finalize($account);
+      //$this->messenger()->addStatus($this->t('Registration successful. You are now logged in.'));
+      //$form_state->setRedirect('<front>');
+    }
+    // No administrator approval required.
+    elseif ($account->isActive() || $notify) {
+      if (!$account->getEmail() && $notify) {
+        $this->messenger()->addStatus($this->t('The new user <a href=":url">%name</a> was created without an email address, so no welcome message was sent.', [':url' => $account->toUrl()->toString(), '%name' => $username]));
+      }
+      else {
+        $op = $notify ? 'register_admin_created' : 'register_no_approval_required';
+        if (_user_mail_notify($op, $account)) {
+          if ($notify) {
+            $this->messenger()->addStatus($this->t('A welcome message with further instructions has been emailed to the new user <a href=":url">%name</a>.', [':url' => $account->toUrl()->toString(), '%name' => $username]));
+          }
+          else {
+            $this->messenger()->addStatus($this->t('A welcome message with further instructions has been sent to your email address.'));
+            $form_state->setRedirect('<front>');
+          }
+        }
+      }
+    }
+    // Administrator approval required.
+    else {
+      _user_mail_notify('register_pending_approval', $account);
+      $this->messenger()->addStatus($this->t('Thank you for applying for an account. Your account is currently pending approval by the site administrator.<br />In the meantime, a welcome message with further instructions has been sent to your email address.'));
+      $form_state->setRedirect('<front>');
+    }
 }
 
 function _niv_form_user_register_form_validate(array &$form, FormStateInterface $form_state) {
@@ -56,7 +140,7 @@ function _niv_form_user_register_form_validate(array &$form, FormStateInterface 
   $org_keys_array = [];
   $roles = \Drupal::currentUser()->getRoles();
   
-  if (!in_array('administrator', $roles) ){
+  if (!in_array('administrator', $roles) && !in_array('niv_admin', $roles)){
   
   if(!empty($values['field_organization_key'])){
 	  
@@ -98,5 +182,35 @@ function _niv_form_user_register_form_validate(array &$form, FormStateInterface 
   }
   }
   
-  
 }
+ 
+/**
+ * Implements hook_theme().
+ */
+
+function niv_theme($existing, $type, $theme, $path) {
+	
+$theme_path = drupal_get_path('theme' , 'niv');
+
+  return [
+
+    'org_admin_reg' => [
+	'path' => $theme_path . '/templates/form',
+      'template' => 'org_admin_reg',
+      'render element' => 'form',
+    ],
+	'parent_teacher_reg' => [
+	'path' => $theme_path . '/templates/form',
+      'template' => 'parent_teacher_reg',
+      'render element' => 'form',
+    ],
+	
+	
+
+    
+
+  ];
+}
+
+
+  
