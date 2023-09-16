@@ -1,8 +1,8 @@
 <div class="row">
-<div class="col-sm-12 col-lg-6 blue_bg">
+<div class="col-sm-12 col-lg-6 blue_bg form-leftSide">
   Azaad
 </div>
-<div class="col-sm-12 col-lg-6">
+<div class="col-sm-12 col-lg-6 form-rightSide">
 	<div>Register</div>
   <form {{ attributes }} >
   {{ children }}
