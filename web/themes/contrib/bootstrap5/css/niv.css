@@ -92,3 +92,19 @@ header .navbar-expand-lg.bg-dark{background-color: #13388e!important;}
     
 .form-rightSide .form-actions{width: 100%;
   margin: 0 8px;text-align: left;}
+
+  #edit-account.js-form-wrapper.form-wrapper{width: 100%;}
+  #edit-account .form-item-mail,#edit-account .password-parent,#edit-account .confirm-parent,#edit-pass--description.description{width: 46%;
+    float: left;
+    margin: 0 1%;}
+    #edit-pass--description.description{display: none;}
+    #edit-field-organization-wrapper{    margin: 0 2%;}
+    .user-register-form.user-form .form-actions{text-align: left;
+      width: 100%;
+      margin: 20px 2%;}
+
+     
+      .form-rightSide #edit-account .form-item-mail, 
+      .form-rightSide #edit-account .password-parent, 
+      .form-rightSide #edit-account .confirm-parent, 
+      .form-rightSide #edit-pass--description.description{width: 100%;}
