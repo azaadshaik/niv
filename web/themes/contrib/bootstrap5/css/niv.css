@@ -34,12 +34,12 @@ h4.label.js-form-required.form-required{font-weight:normal;}
   background-color: #157347;
   border-color: #146c43;
 }
-.webform-button--next{font-size: 14px;}
-.webform-button--previous{    font-size: 14px;color: #000;
-  background-color: #ffc107;
-  border-color: #ffc107;}
-  .webform-button--previous:hover{color: #000;background-color: #ffca2c;
-    border-color: #ffc720;}
+.webform-button--next{font-size: 14px;background-color: #13388e;}
+.webform-button--previous{    font-size: 14px;
+  background-color: #3f51b5;
+  border-color: #3f51b5;}
+  .webform-button--previous:hover{background-color:#3f51b5;
+    border-color:#3f51b5;}
 .user-logged-in.path-assessment #edit-actions{width:100%;}
 .col-md-2.text-center span.d-block{background-color: #13388e;cursor: pointer;
   padding: 20px 10px;
