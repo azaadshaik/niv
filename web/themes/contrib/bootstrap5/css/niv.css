@@ -28,6 +28,7 @@ body{background-color:#eaeaea;}
 }
 
 /*custom css here */
+footer.footer-dark{padding: 1.5rem 0;background: #ffffff !important;}
 h4.label.js-form-required.form-required{font-weight:normal;}
 .webform-button--draft{   float: left; font-size: 14px;background-color: #198754;    border-color: #198754;}
 .webform-button--draft:hover{    color: #fff;
