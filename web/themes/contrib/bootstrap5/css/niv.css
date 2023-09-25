@@ -28,6 +28,7 @@ body{background-color:#eaeaea;}
 }
 
 /*custom css here */
+#edit-submit{background-color: #13388e;}
 footer.footer-dark{padding: 1.5rem 0;background: #ffffff !important;}
 h4.label.js-form-required.form-required{font-weight:normal;}
 .webform-button--draft{   float: left; font-size: 14px;background-color: #198754;    border-color: #198754;}
@@ -152,7 +153,7 @@ header .navbar-expand-lg.bg-dark{background-color: #13388e!important;}
         padding: 4px 30px;
         font-size:14px;
         color: #ffffff;
-    border-radius: 3px;
+    border-radius:5px;
     }
     .row.registration-links{text-align: center;
       display: inline-flex;
