@@ -1,4 +1,5 @@
 *{ box-sizing: border-box;}
+body{background-color:#eaeaea;}
 .blue_bg {
   background: url(images/login_bg.jpg);
     background-size: auto;
@@ -27,13 +28,17 @@
 }
 
 /*custom css here */
+.form-item, .form-actions{margin:0 !important;}
+.js-form-item.form-item {margin-bottom:10px !important;}
+#edit-actions.form-actions{margin-top:20px !important}
 .form-leftSide{font-size: 2.5rem;
+  font-weight: 800;
   color: #ffffff;
   text-align: center;padding: 10%;
   display: flex;
   align-items: center;
   justify-content: center;}
-.form-rightSide{    background-color: #eaeaea;
+.form-rightSide{    background-color: #ffffff;
   height: 100%;
   min-height: 350px;
   padding: 3rem!important;}
@@ -41,10 +46,11 @@
   overflow: hidden;
 }
 
+.path-frontpage #block-niv-content.block-system-main-block,
 .path-user #block-niv-content.block-system-main-block{box-shadow: 4px 7px 4px 0px rgba(0,0,0,0.2);}
-.path-user .region-content{margin:100px 140px !important;}
+.path-frontpage .region-content,.path-user .region-content{margin:100px 140px !important;}
 .user-logged-in.path-user .region-content{margin:100px 10px !important}
-.user-logged-in.path-user #block-niv-content.block-system-main-block{box-shadow:none;} 
+ .user-logged-in.path-user #block-niv-content.block-system-main-block{box-shadow:none;} 
   /* box-shadow: 4px 7px 4px 0px rgba(0,0,0,0.2);   */
 header .navbar-expand-lg.bg-dark{background-color: #13388e!important;}
 /* navigation css here */
@@ -119,7 +125,8 @@ header .navbar-expand-lg.bg-dark{background-color: #13388e!important;}
 
       .row.registration-links a{text-decoration: none;
         background: #13388e;
-        padding: 5px 30px;
+        padding: 4px 30px;
+        font-size:14px;
         color: #ffffff;
     border-radius: 3px;
     }
