@@ -13,3 +13,14 @@ niv.settings_form:
     _form: 'Drupal\niv\Form\SettingsForm'
   requirements:
     _permission: 'administer niv configuration'
+    
+niv.load_form:
+  path: '/assessment/{profileId}/{webformId}'
+  defaults:
+    _title: 'assessment '
+    _controller: '\Drupal\niv\Controller\NivController::loadAssessmentForm'
+  options:
+    parameters:
+      levelId:
+  requirements:
+    _permission: 'access content' 

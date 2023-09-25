@@ -1,3 +1,4 @@
+
 <div class="container-fluid">
       <div class="row">
         <h2 class="col-md-4">Profile</h2>
@@ -5,13 +6,13 @@
           <div class="row">
           <div class="col-md-9 mt-4">
           <div class="col-md-12">
-          <label class="fw-bold">Name:&nbsp; </label><span>{{node.title.value}}</span>
+          <label class="fw-bold">Name:&nbsp; </label><span>{{profiledata.name}}</span>
         </div> 
         <div class="col-md-12">
-          <label class="fw-bold">Age: &nbsp;</label><span>{{node.field_date_of_birth.value}}</span>
+          <label class="fw-bold">Age: &nbsp;</label><span>{{profiledata.age}} Y</span>
         </div> 
         <div class="col-md-12">
-          <label class="fw-bold">Gender: &nbsp;</label><span>{{node.field_gender.value}}</span>
+          <label class="fw-bold">Gender: &nbsp;</label><span>{{profiledata.gender}}</span>
         </div> 
       
       </div>
@@ -23,11 +24,27 @@
         <h5>Recommended Forms</h5>
         <div class="card p-4">
           <div class="row">
-         <div class="col-md-2 text-center">
-          <a routerLink="/cart"><i class="bi bi-file-earmark-ruled text-info"></i></a>
-          <span class="d-block">Form A</span>
-         </div>
+		{% if profiledata.forms.0 is null %}
+		
+		<div class="col-md-2 text-center">
          
+          <span class="d-block">No recommended forms yet.</span>
+         </div>
+			
+		
+		{% else %}
+		
+		 {% for form in profiledata.forms %}
+		 <div class="col-md-2 text-center">
+          <a href="{{form.form_link}}"><i class="bi bi-file-earmark-ruled text-info"></i></a>
+          <span class="d-block"><a href="{{form.form_link}}">{{form.name}}</a></span>
+         </div>
+       
+    {% endfor %}
+		
+		
+         
+         {% endif %}
         </div>
         </div>
       </div>

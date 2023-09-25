@@ -132,3 +132,14 @@ header .navbar-expand-lg.bg-dark{background-color: #13388e!important;}
       @media only screen and (max-width: 900px) {
         .path-user .region-content{margin:0 !important;}
       }
+	  
+/** Temporary need to fix**/  
+#edit-mail--description,.site-title {
+display:none !important;
+}
+header .navbar-expand-lg.bg-dark {
+	background-color:rgb(5, 30, 97) !important;
+}
+
+
+	
