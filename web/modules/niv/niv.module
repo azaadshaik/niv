@@ -263,17 +263,18 @@ foreach($nodes as $node){
 				if($submission->get('completed')->value){
 					$submission_id = $submission->get('sid')->value;
 					$token = $submission->get('token')->value;
-					$form = ['name'=>$node->title->value,'form_link'=>'/webform/'.$node->field_webform->target_id.'/submissions/'.$submission_id.'?token='.$token.'&profile='.$nid,'status'=>'1'];
+					$form = ['name'=>$node->title->value,'form_link'=>'/webform/'.$node->field_webform->target_id.'/submissions/'.$submission_id.'?token='.$token.'&profile='.$nid,'status'=>1];
 					$indexValues = _niv_get_index_values($nid,$submission_id);
 					
 				}
 				else{
-					$form = ['name'=>$node->title->value,'form_link'=>'/assessment/'.$nid.'/'.$node->field_webform->target_id.'?profile='.$nid,'status'=>'0'];
+					$form = ['name'=>$node->title->value,'form_link'=>'/assessment/'.$nid.'/'.$node->field_webform->target_id.'?profile='.$nid,'status'=>0];
 				}
 			}
 		}
 		else{
-			$form = ['name'=>$node->title->value,'form_link'=>'/assessment/'.$nid.'/'.$node->field_webform->target_id.'?profile='.$nid,'status'=>'Not submitted'];
+			
+			$form = ['name'=>$node->title->value,'form_link'=>'/assessment/'.$nid.'/'.$node->field_webform->target_id.'?profile='.$nid,'status'=>0];
 		}
 	}
 	$recommendedForms[] = $form;

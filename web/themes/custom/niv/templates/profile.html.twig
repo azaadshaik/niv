@@ -45,7 +45,7 @@ canvas {
               </div>
             {% endif %}
 
-            {% if profiledata.forms.0.status is defined and profiledata.forms.0.status is null %}
+            {% if profiledata.forms.0.status is defined and profiledata.forms.0.status == 0 %}
                 <div class="col-md-12 py-5 mx-auto">
                 <h5>Recommended Forms</h5>
                 <div class="card p-4">
@@ -60,7 +60,7 @@ canvas {
 
             {% endif %}
 
-            {% if profiledata.forms.0.status is defined and profiledata.forms.0.status %}
+            {% if profiledata.forms.0.status is defined and profiledata.forms.0.status == 1 %}
                 {# Show suggestions #}
 
                 <div class="col-md-12 py-5 mx-auto">
@@ -80,17 +80,7 @@ canvas {
 
 
 
-                <div class="col-md-12 py-5 mx-auto">
-                <h5>Recommended Forms</h5>
-                <div class="card p-4">
-                  <div class="row">
-                    <div class="col-md-2 text-center">
-                  <a href="javascript:;"><i class="bi bi-file-earmark-ruled text-info"></i></a>
-                  <span class="d-block"><a href="javascript:;">{{profiledata.forms.0.name}}</a></span>
-              </div>
-                  </div>
-                </div>
-              </div>
+                
 
          
 
@@ -113,12 +103,26 @@ canvas {
                 </div>
               </div>
 
-              
-              <div class="row">
+                <div class="row">
               <div class="col-md-2">
                 <button class="btn btn-primary"><a href="{{profiledata.forms.0.form_link}}">Report</a></button>
               </div>
               </div>
+
+
+            <div class="col-md-12 py-5 mx-auto">
+                <h5>Recommended Forms</h5>
+                <div class="card p-4">
+                  <div class="row">
+                    <div class="col-md-2 text-center">
+                  <a href="javascript:;"><i class="bi bi-file-earmark-ruled text-info"></i></a>
+                  <span class="d-block"><a href="javascript:;">{{profiledata.forms.0.name}}</a></span>
+              </div>
+                  </div>
+                </div>
+              </div>
+              
+            
 
                  {% endif %}
 
