@@ -1,17 +1,19 @@
-name: NIV
+name: niv
 type: theme
 description: 'Custom theme for NIV'
 package: Core
-
+base theme: bootstrap5
 core_version_requirement: ^8.8 || ^9
-project: 'niv'
+
 
 
 libraries:
-  - niv/global
+  - niv/global-styling
+  - niv/global-scripts
   
   
-base theme: bootstrap5
+  
+
 
 regions:
   header: Header
@@ -23,3 +25,7 @@ regions:
   sidebar_first: 'Sidebar first'
   sidebar_second: 'Sidebar second'
   footer: Footer
+
+version: '8.x-2.1'
+project: 'niv'
+datestamp: 1612916296

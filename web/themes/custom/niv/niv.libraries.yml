@@ -1,5 +1,13 @@
-global:
+global-styling:
   version: VERSION
   css:
     theme:
       css/niv.css: {}
+      
+      
+global-scripts:
+  version: VERSION
+  js: 
+    js/niv.js: {}
+    https://unpkg.com/chart.js@2.8.0/dist/Chart.bundle.js: {type: external, minified: true}
+    https://unpkg.com/chartjs-gauge@0.3.0/dist/chartjs-gauge.js : {type: external, minified: true}   

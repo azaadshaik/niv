@@ -108,6 +108,7 @@ bootstrap5-js-latest:
   version: '5.2.3'
   js:
     dist/bootstrap/5.2.3/dist/js/bootstrap.bundle.js: {}
+    js/niv.js: {}
 
 global-styling:
   css:
@@ -118,7 +119,7 @@ global-styling:
 drupal.nav-tabs:
   version: '5.2.3'
   js:
-    js/nav-tabs.js: {}
+    #js/nav-tabs.js: {}
   dependencies:
     - core/matchmedia
     - core/jquery
@@ -136,3 +137,12 @@ style-guide:
       dist/bootstrap/5.2.3/site/content/docs/5.2/examples/cheatsheet/cheatsheet.css: {}
   dependencies:
     - bootstrap5/bootstrap5-js-latest
+niv:
+  version: '5.2.3'
+  js:
+    js/nav-tabs.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/once
+ 

@@ -9,12 +9,6 @@
 
           //Timezone issue temp fix
         
-				//var timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        var timeZone = moment.tz.guess();
-		
-       
-		if(timeZone=='Asia/Saigon'){
-			timeZone = 'Asia/Ho_Chi_Minh';
 		}
 		else if(timeZone=='Asia/Calcutta'){
 		 timeZone = 'Asia/Kolkata';

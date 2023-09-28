@@ -12,6 +12,7 @@ libraries:
   - core/normalize
   - bootstrap5/bootstrap5-js-latest
   - bootstrap5/global-styling
+  - bootstrap5/niv
 
 libraries-extend:
   user/drupal.user:

@@ -17,8 +17,19 @@ niv.settings_form:
 niv.load_form:
   path: '/assessment/{profileId}/{webformId}'
   defaults:
-    _title: 'assessment '
+    _title: 'assessment'
     _controller: '\Drupal\niv\Controller\NivController::loadAssessmentForm'
+  options:
+    parameters:
+      levelId:
+  requirements:
+    _permission: 'access content' 
+    
+niv.load_report:
+  path: '/report/{profileId}/{submissionId}'
+  defaults:
+    _title: 'assessment '
+    _controller: '\Drupal\niv\Controller\NivController::loadAssessmentReport'
   options:
     parameters:
       levelId:

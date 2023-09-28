@@ -172,6 +172,9 @@ display:none !important;
 header .navbar-expand-lg.bg-dark {
 	background-color:rgb(5, 30, 97) !important;
 }
+.webform-submission-information.card {
+	display:none;
+}
 
 
 	
