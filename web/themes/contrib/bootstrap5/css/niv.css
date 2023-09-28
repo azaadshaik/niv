@@ -28,6 +28,14 @@ body{background-color:#eaeaea;}
 }
 
 /*custom css here */
+.js-webform-type-fieldset .fieldset-legend{font-size: 26px;
+  font-weight: 700;}
+  .js-webform-type-fieldset .radios--wrapper .fieldset-legend{font-size:16px;
+    font-weight: 500;}
+.webform-container legend{display: none;}
+.webform-container .webform-element label{margin-right:15px;font-weight: 400;}
+.webform-container .webform-element{font-weight: 600;}
+
 #edit-submit{background-color: #13388e;}
 footer.footer-dark{padding: 1.5rem 0;background: #ffffff !important;}
 h4.label.js-form-required.form-required{font-weight:normal;}
@@ -87,7 +95,9 @@ header .navbar-expand-lg.bg-dark{background-color: #13388e!important;}
   #block-nivadminmenu .navbar-nav .nav-link:hover,
   #block-test .navbar-nav .nav-link:hover,
   #block-test .navbar-nav .nav-link.active{background-color: #3f51b5;border-radius: 3px;;} */
-
+.disabled{opacity:0.4;}
+.disabled:hover{box-shadow: none !important; cursor: none !important;}
+.disabled:hover > a{cursor: none !important;}
   .region-sidebar-first .navbar-nav .nav-link{background-color: #13388e;
     margin-bottom: 5px;
     color: #ffffff;
