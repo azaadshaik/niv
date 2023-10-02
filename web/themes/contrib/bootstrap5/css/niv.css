@@ -28,7 +28,7 @@ body{background-color:#eaeaea;}
 }
 
 /*custom css here */
-.js-webform-type-fieldset .fieldset-legend{font-size: 26px;
+.js-webform-type-fieldset .fieldset-legend{font-size: 26px;color: #051E61;
   font-weight: 700;}
   .js-webform-type-fieldset .radios--wrapper .fieldset-legend{font-size:16px;
     font-weight: 500;}
@@ -41,12 +41,13 @@ body{background-color:#eaeaea;}
 #edit-submit{background-color: #13388e;}
 footer.footer-dark{padding: 1.5rem 0;background: #ffffff !important;}
 h4.label.js-form-required.form-required{font-weight:normal;}
-.webform-button--draft{   float: left; font-size: 14px;background-color: #198754;    border-color: #198754;}
+/* .webform-button--draft{   float: left; font-size: 14px;background-color: #198754;    border-color: #198754;}
 .webform-button--draft:hover{    color: #fff;
   background-color: #157347;
   border-color: #146c43;
-}
-.webform-button--next{font-size: 14px;background-color: #13388e;}
+} */
+.webform-button--draft{float: left;}
+.webform-button--next,.webform-button--draft{font-size: 14px;background-color: #13388e;}
 .webform-button--previous{    font-size: 14px;
   background-color: #3f51b5;
   border-color: #3f51b5;}
@@ -167,6 +168,7 @@ header .navbar-expand-lg.bg-dark{background-color: #13388e!important;}
         color: #ffffff;
     border-radius:5px;
     }
+    .row.registration-links a.active{background: #3f51b5;}
     .row.registration-links{text-align: center;
       display: inline-flex;
       margin: 0 20%;}
