@@ -1,6 +1,5 @@
 {% set roles = user.getroles(TRUE) %}
 
-
 <style>
 canvas {
   -moz-user-select: none;
@@ -71,9 +70,23 @@ canvas {
                 <div class="card p-4">
                   <div class="row">
                     <div class="col-md-12 text-center">
-                      <span class="d-block">{{profiledata.suggestions}}</span>
+                      <span class="d-block">
+                      {% set i=1 %}
+                      {% for data in  profiledata.suggestionsData %}
+                      <div style="float:left;">{{i}} . </div><div style="text-align:left;">&nbsp;{{data}}</div>
+                      {% set i=i+1 %}
+                      {% endfor %}
+                      </span>
                     </div>
                   </div>
+
+                  <div class="row">
+                    <div class="col-md-12 text-end">
+                      <button class="btn btn-primary"><a style="text-decoration:none;" href="/nivadmin/addSuggestions/{{profiledata.nid}}/{{profiledata.sid}}">Update Suggestions</a></button>
+                    </div>
+                  </div>
+
+
                  
                 </div>
               </div>

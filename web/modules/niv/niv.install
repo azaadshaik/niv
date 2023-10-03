@@ -1,0 +1,54 @@
+<?php
+use Drupal\Core\Database\Database;
+
+/**
+ * Implements hook_schema().
+ */
+function niv_schema(){
+    $schema['niv_suggestion_submissions'] = array(
+        'description' => 'The table for storing the suggestions ofrm data',
+        'fields' => array(
+		
+		
+			'id' => array(
+                'description' => 'pk of the table',
+                'type' => 'int',
+                'not null' => TRUE,
+                'unsigned' => TRUE,
+            ),
+			'suggestion_id' => array(
+                'description' => 'id of the suggestion',
+                'type' => 'int',
+                'not null' => TRUE,
+                'unsigned' => TRUE,
+            ),
+			'suggestion_value' => array(
+                'description' => 'Answer of the suggestion',
+                'type' => 'int',
+                'not null' => TRUE,
+                'unsigned' => TRUE,
+            ),
+            'profile_id' => array(
+                'description' => 'id of the content type profile',
+                'type' => 'int',
+                'not null' => TRUE,
+                'unsigned' => TRUE,
+            ),
+            'profile_author' => array(
+                'description' => 'The one who created the profile',
+                'type' => 'int',
+                'not null' => TRUE,
+                
+            ),
+           'submitted_date' => array(
+                'description' => 'form submitted date',
+                'type' => 'varchar',
+                'length' => 255,
+                'not null' => TRUE,
+            ),
+            
+        ),
+        'primary key' => array('id'),
+    );
+    return $schema;
+}

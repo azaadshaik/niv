@@ -5,6 +5,7 @@ namespace Drupal\niv\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Entity\webform;
 use Drupal\Core\Site\Settings;
+use Drupal\node\Entity\Node;
 
 /**
  * Returns responses for niv routes.
@@ -158,7 +159,7 @@ $performanceIndex = ($engagementIndex + $attentionIndex) /2 ;
 
 
 
-    $entity = \Drupal::entityTypeManager()->getStorage('node')->load($profileId);
+$entity = \Drupal::entityTypeManager()->getStorage('node')->load($profileId);
     
 $webform = \Drupal::entityTypeManager()->getStorage('webform')->load($webformId);
 
@@ -179,6 +180,67 @@ $webform = \Drupal::entityTypeManager()->getStorage('webform')->load($webformId)
 
 
     return $build;
+  }
+
+  function nivAdminDashboard(){
+
+
+    $query = \Drupal::entityQuery('node')
+    ->condition('type', 'organizations')
+  	->condition('field_active', 1, '=');
+	 $nids = $query->execute();
+  $orgs = Node::loadMultiple($nids);
+  $orgCount = count($orgs);
+
+  $query = \Drupal::entityQuery('node')
+    ->condition('type', 'profile');
+  	
+	 $nids = $query->execute();
+  $profiles = Node::loadMultiple($nids);
+
+  $profilesCount = count($profiles);
+
+
+  $build = [
+    '#theme' => 'nivadmin_dashboard',
+    '#counts' => ['orgCount'=>$orgCount,'proCount' => $profilesCount],
+    
+   
+  ];
+
+    return $build;
+
+  }
+
+
+  function addSuggestions($profileId,$submissionId){
+
+    $query = \Drupal::entityQuery('node')
+    ->condition('type', 'suggestions');
+  	$nids = $query->execute();
+  $suggestions = Node::loadMultiple($nids);
+  $profile = Node::load($profileId);
+  $name = $profile->title->value;
+	 $dob = $profile->field_date_of_birth->value;
+	 $dobYear = date('Y',strtotime($dob));
+	 $currentYear = date('Y');
+	 $age = $currentYear - $dobYear;
+	 $gender = $profile->field_gender->value;
+  $extra = ['submission_id'=>$submissionId,'profile_id'=>$profileId,'suggestions'=>$suggestions];
+  $form = \Drupal::formBuilder()->getForm('Drupal\niv\Form\adminSuggestionsForm',$extra);
+  
+
+  $build = [
+    '#theme' => 'nivadmin_addsuggestions',
+    '#data' => ['suggestions_form'=>$form,'profile_data' => ['name'=>$name,'age'=>$age,'gender'=>$gender]],
+    
+   
+  ];
+
+  return $build;
+
+
+
   }
 
 

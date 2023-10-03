@@ -216,6 +216,28 @@ $theme_path = drupal_get_path('theme' , 'niv');
       'render element' => 'elements',
       'variables' => ['profiledata' => []]
     ],
+	'nivadmin_dashboard' => [
+	'path' => $theme_path . '/templates',
+      'template' => 'nivadmin_dashboard',
+      'render element' => 'elements',
+      'variables' => ['counts' => []]
+    ],
+	
+	'nivadmin_addsuggestions' => [
+	'path' => $theme_path . '/templates',
+      'template' => 'nivadmin_addsuggestions',
+      'render element' => 'elements',
+      'variables' => ['data' => []]
+    ],
+	'nivadmin_profile_view' => [
+	'path' => $theme_path . '/templates',
+      'template' => 'nivadmin_profile_view',
+      'render element' => 'elements',
+      'variables' => ['profiledata' => []]
+    ],
+	
+	
+	
 	
 	
 
@@ -228,8 +250,12 @@ $theme_path = drupal_get_path('theme' , 'niv');
 function niv_node_view_alter(array &$build, \Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display) {
 	
 	//dump($entity);
+	$node_author = $entity->uid->entity;
+	//dump($node_author->getRoles());
 	$type = $entity->getType();
-	$roles = \Drupal::currentUser()->getRoles();
+	//$roles = \Drupal::currentUser()->getRoles();
+	$roles = $node_author->getRoles(); // current user may be niv admin so better get the roles by author ID
+	
 	
 	if($type=='profile' && (in_array('parent',$roles) || in_array('teacher',$roles))){
 	 $name = $entity->title->value;
@@ -242,7 +268,7 @@ function niv_node_view_alter(array &$build, \Drupal\Core\Entity\EntityInterface 
 	 
 	 $build['#theme'] = 'profile_view';
 	 $build['#profiledata'] = ['name'=>$name,'age' => $age,'gender'=>$gender,'nid'=>$nid];
-	 $roles = \Drupal::currentUser()->getRoles();
+	 $currentUserRoles = \Drupal::currentUser()->getRoles();
 	 
 	 $query = \Drupal::entityQuery('node')
     ->condition('type', 'niv_form_access')
@@ -253,7 +279,9 @@ function niv_node_view_alter(array &$build, \Drupal\Core\Entity\EntityInterface 
 	
 $recommendedForms =[];
 $indexValues = [];
-
+$suggestionsData=[];
+$suggestions = [];
+$suggestions_form = '';
 foreach($nodes as $node){
 	if($age >= $node->field_min_age->value && $age <= $node->field_max_age->value){
 		$values = ['entity_id'=>$nid,'webform_id'=>$node->field_webform->target_id];
@@ -262,9 +290,19 @@ foreach($nodes as $node){
 			foreach($submissions as $submission){
 				if($submission->get('completed')->value){
 					$submission_id = $submission->get('sid')->value;
+					$build['#profiledata']['sid'] = $submission_id;
 					$token = $submission->get('token')->value;
 					$form = ['name'=>$node->title->value,'form_link'=>'/webform/'.$node->field_webform->target_id.'/submissions/'.$submission_id.'?token='.$token.'&profile='.$nid,'status'=>1];
 					$indexValues = _niv_get_index_values($nid,$submission_id);
+					
+					
+					$suggestions = _niv_get_profile_suggestions($nid,$submission_id);
+					if(!empty($suggestions)){
+						$suggestionsData = Node::loadMultiple($suggestions);
+						$extra = ['submission_id'=>$submission_id,'profile_id'=>$nid];
+						$suggestions_form = \Drupal::formBuilder()->getForm('Drupal\niv\Form\profileSuggestionsForm',$extra);
+					}
+						
 					
 				}
 				else{
@@ -279,9 +317,23 @@ foreach($nodes as $node){
 	}
 	$recommendedForms[] = $form;
 }
-
+if( in_array('niv_admin',$currentUserRoles)){
+	$build['#theme'] = 'nivadmin_profile_view';
+	$tempSuggestions =[];
+	if(!empty($suggestionsData)){
+		foreach($suggestionsData as $suggestion){
+			
+			$tempSuggestions[] = $suggestion->get('title')->value;
+		
+		}
+		$suggestionsData = $tempSuggestions; 
+	}
+	
+}
 $build['#profiledata']['forms'] = $recommendedForms;
 $build['#profiledata']['indexValues'] = $indexValues;
+$build['#profiledata']['suggestions'] = $suggestions_form;
+$build['#profiledata']['suggestionsData'] = $suggestionsData;
 
 }
   
@@ -295,6 +347,18 @@ function niv_webform_submission_presave(WebformSubmissionInterface $webform_subm
   $webform_submission->set('entity_id',$entity_id);
   $webform_submission->set('entity_type','node');
    
+}
+
+
+function _niv_get_profile_suggestions($profileId,$submissionId){
+	$connection = \Drupal::database();
+					$query = $connection->select('niv_suggestion_mapping', 'n');
+					$query->condition('n.profile_id',$profileId );
+					$query->condition('n.submission_id', $submissionId);
+					$query->fields('n', ['id', 'suggestion_id']);
+					$results = $query->execute()->fetchAllKeyed(0,1);
+					
+					return $results;
 }
 
 

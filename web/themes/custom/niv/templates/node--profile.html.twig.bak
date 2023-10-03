@@ -1,14 +1,76 @@
-<div class="row">
-	<div class="col-sm-6 col-lg-6">
-		<div class="profile-data-container">
-			<div><span>Name</span> <span>:</span><span>{{node.title.value}}</span> </div>
-			<div><span>Gender</span> <span>:</span><span>{{node.field_gender.value}}</span> </div>
-			<div><span>Age</span> <span>:</span><span>{{node.field_date_of_birth.value}}</span> </div>
-		</div>
-	</div>
-<div class="col-sm-6 col-lg-6"><img src="/themes/custom/niv/images/168724.png"></div>
-
-</div>
-
-
-
+<div class="container-fluid">
+      <div class="row">
+        <h2 class="col-md-4">Profile</h2>
+        <div class="col-md-8 text-end">
+          <div class="row">
+          <div class="col-md-9 mt-4">
+          <div class="col-md-12">
+          <label class="fw-bold">Name:&nbsp; </label><span>{{node.title.value}}</span>
+        </div> 
+        <div class="col-md-12">
+          <label class="fw-bold">Age: &nbsp;</label><span>{{node.field_gender.value}}</span>
+        </div> 
+        <div class="col-md-12">
+          <label class="fw-bold">Gender: &nbsp;</label><span>{{node.field_date_of_birth.value}}</span>
+        </div> 
+      
+      </div>
+        <div class="col-md-3"><img src="/themes/custom/niv/images/168724.png" class="img-thumbnail rounded-circle"   alt="..."></div>
+        </div>
+      </div>
+      </div>
+      <div class="col-md-12 py-5 mx-auto">
+        <h5>Recommended Forms</h5>
+        <div class="card p-4">
+          <div class="row">
+         <div class="col-md-2 text-center">
+          <a routerLink="/cart"><i class="bi bi-file-earmark-ruled text-info"></i></a>
+          <span class="d-block">Form A</span>
+         </div>
+         
+        </div>
+        </div>
+      </div>
+     
+      <div class="col-md-12  mx-auto mt-5">
+        <h5>Previous Reports</h5>
+        <div class="card p-4">
+          <div class="row">
+         <div class="col-md-12">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Scores</th>
+                <th scope="col">Percentage</th>
+                <th scope="col">Others</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">10/06/2023</th>
+                <td>86</td>
+                <td>80%</td>
+                <td>@mdo</td>
+              </tr>
+              <tr>
+                <th scope="row">10/06/2023</th>
+                <td>86</td>
+                <td>80%</td>
+                <td>@mdo</td>
+              </tr>
+              <tr>
+                <th scope="row">10/06/2023</th>
+                <td>86</td>
+                <td>80%</td>
+                <td>@mdo</td>
+              </tr>
+            </tbody>
+          </table>
+         </div>
+         
+        </div>
+        </div>
+      </div>
+       <!-- previous reports ends-->
+    </div>

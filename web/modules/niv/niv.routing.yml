@@ -34,4 +34,22 @@ niv.load_report:
     parameters:
       levelId:
   requirements:
-    _permission: 'access content' 
+    _permission: 'access content'
+
+niv.nivadmin_dashbord:
+  path: '/nivadmin/dashboard'
+  defaults:
+    _title: 'assessment '
+    _controller: '\Drupal\niv\Controller\NivController::nivAdminDashboard'
+  requirements:
+    _permission: 'access content'
+
+niv.nivadmin_add_suggestions:
+  path: '/nivadmin/addSuggestions/{profileId}/{submissionId}'
+  defaults:
+    _title: 'Suggestions '
+    _controller: '\Drupal\niv\Controller\NivController::addSuggestions'
+  requirements:
+    _permission: 'access content'         
+
+

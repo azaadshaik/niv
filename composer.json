@@ -32,6 +32,7 @@
         "drupal/quiz": "6.x-dev@dev",
         "drupal/redirect_after_login": "2.7",
         "drupal/rules": "3.x-dev@dev",
+        "drupal/token": "1.12",
         "drupal/twig_debugger": "^1.1",
         "drupal/typed_data": "dev-1.x",
         "drupal/user_registrationpassword": "^2.0",

@@ -191,5 +191,32 @@ header .navbar-expand-lg.bg-dark {
 	display:none;
 }
 
+.path-nivadmin .dashboard .d-block {
+  display: block !important;
+  background-color: #3f51b5;
+  padding: 50px;
+  border-radius: 15px;
+  
+}
+.path-nivadmin .dashboard .d-block a {
+  
+  color: #FFF;
+  font-size: larger;
+  font-weight: bold;
+  text-decoration: none;
+  
+  
+}
+
+.page-node-type-profile .form-radios .form-type-radio{
+  float:left;
+  margin-right: 20px !important;
+}
+
+.profile-suggestions-form legend {
+
+  text-align: left;
+}
+
 
 	
