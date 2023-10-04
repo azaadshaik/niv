@@ -29,10 +29,10 @@ body{background-color:#eaeaea;}
 
 /*custom css here */
 #block-niv-content 
-.js-webform-type-fieldset .fieldset-legend{font-size: 26px;color: #051E61;
+.js-webform-type-fieldset legend .fieldset-legend{font-size: 26px;color: #051E61;
   font-weight: 700;}
-  .js-webform-type-fieldset .radios--wrapper .fieldset-legend{font-size:16px;
-    font-weight: 500;}
+  .js-webform-type-fieldset .fieldset-wrapper .radios--wrapper .fieldset-legend{font-size:17px !important;
+    font-weight:500 !important;}
 .webform-container .card-header{color:#051E61;font-weight: 700;}
 .webform-container legend{display: none;}
 .webform-container .webform-element label{margin-right:15px;font-weight: 400;color: #000;}
@@ -66,7 +66,7 @@ h4.label.js-form-required.form-required{font-weight:normal;}
   font-weight: 500;
   text-transform: uppercase;}
 .form-item, .form-actions{margin:0 !important;}
-.js-form-item.form-item {margin-bottom:15px !important;}
+.js-form-item.form-item {margin-bottom:15px !important;    margin-right: 10px !important;}
 #edit-actions.form-actions{margin-top:20px !important}
 .form-leftSide{font-size: 2.5rem;
   font-weight: 800;
