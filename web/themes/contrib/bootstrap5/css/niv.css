@@ -28,6 +28,7 @@ body{background-color:#eaeaea;}
 }
 
 /*custom css here */
+#block-niv-content 
 .js-webform-type-fieldset .fieldset-legend{font-size: 26px;color: #051E61;
   font-weight: 700;}
   .js-webform-type-fieldset .radios--wrapper .fieldset-legend{font-size:16px;
@@ -83,12 +84,15 @@ h4.label.js-form-required.form-required{font-weight:normal;}
 }
 
 .path-frontpage #block-niv-content.block-system-main-block,
-.path-user #block-niv-content.block-system-main-block{box-shadow: 4px 7px 4px 0px rgba(0,0,0,0.2);}
+.path-user #block-niv-content.block-system-main-block{box-shadow:1px 0px 10px 4px rgba(0,0,0,0.2);}
 .path-frontpage .region-content,.path-user .region-content{margin:100px 140px !important;}
 .user-logged-in.path-user .region-content{margin:100px 10px !important}
  .user-logged-in.path-user #block-niv-content.block-system-main-block{box-shadow:none;} 
   /* box-shadow: 4px 7px 4px 0px rgba(0,0,0,0.2);   */
 header .navbar-expand-lg.bg-dark{background-color: #13388e!important;}
+form.user-pass{padding: 40px 60px;max-width: 80%;
+  margin: 0 auto;}
+form.user-pass #edit-actions.form-actions{    width: 100%;text-align: center;}
 /* navigation css here */
 /* #block-nivadminmenu .navbar-nav .nav-link,
 #block-test .navbar-nav .nav-link{background-color: #13388e;
