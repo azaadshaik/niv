@@ -50,6 +50,14 @@ niv.nivadmin_add_suggestions:
     _title: 'Suggestions '
     _controller: '\Drupal\niv\Controller\NivController::addSuggestions'
   requirements:
-    _permission: 'access content'         
+    _permission: 'access content'
+
+niv.nivadmin_user_profile_list:
+  path: '/nivadmin/user-profiles/{userId}'
+  defaults:
+    _title: 'Profiles '
+    _controller: '\Drupal\niv\Controller\NivController::profilesByuser'
+  requirements:
+    _permission: 'access content'      
 
 

@@ -95,7 +95,7 @@ class adminSuggestionsForm extends FormBase {
     $form['actions']['#type'] = 'actions';
     $form['actions']['submit'] = [
       '#type' => 'submit',
-      '#value' => $this->t('Add selected suggestions to profile'),
+      '#value' => $this->t('Submit'),
       '#button_type' => 'primary',
     ];
     return $form;
@@ -119,9 +119,7 @@ class adminSuggestionsForm extends FormBase {
     $selectedSuggestions = $form_state->getUserInput()['suggestions'];
     $profile_id = $form_state->getUserInput()['profile_id'];
     $submission_id = $form_state->getUserInput()['submission_id'];
-    // dump($selectedSuggestion);
-    // dump($form_state);
-    // die;
+    
     if(!empty($selectedSuggestions)){
       $connection = \Drupal\Core\Database\Database::getConnection() ;
       foreach($selectedSuggestions as $suggestion){
