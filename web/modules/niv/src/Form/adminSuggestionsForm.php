@@ -26,6 +26,7 @@ class adminSuggestionsForm extends FormBase {
 					$query = $connection->select('niv_suggestion_mapping', 'n');
 					$query->condition('n.profile_id',$extra['profile_id'] );
 					$query->condition('n.submission_id', $extra['submission_id']);
+          $query->condition('n.suggestion_status', 1, '=');
 					$query->fields('n', ['id', 'suggestion_id']);
 					$results = $query->execute()->fetchAllKeyed(0,1);
 					
@@ -119,14 +120,42 @@ class adminSuggestionsForm extends FormBase {
     $selectedSuggestions = $form_state->getUserInput()['suggestions'];
     $profile_id = $form_state->getUserInput()['profile_id'];
     $submission_id = $form_state->getUserInput()['submission_id'];
+
+    $connection = \Drupal::database();
+    $query = $connection->select('niv_suggestion_mapping', 'n');
+    $query->condition('n.profile_id',$profile_id );
+    $query->condition('n.submission_id', $submission_id);
+    $query->fields('n', ['id', 'suggestion_id']);
+    $existingSuggestions = $query->execute()->fetchAllKeyed(0,1);
+    $existingSuggestionIds = array_values($existingSuggestions);
     
+    if(!empty($existingSuggestionIds)){
+    $query = $connection->update('niv_suggestion_mapping');
+    $query->fields(['suggestion_status'=>0 ]);
+    $query->condition('suggestion_id',$existingSuggestionIds,'IN' );
+    $query->condition('profile_id',$profile_id,'=' );
+    $query->execute();
+    
+    
+  }
+
+
+     
     if(!empty($selectedSuggestions)){
-      $connection = \Drupal\Core\Database\Database::getConnection() ;
+      //$connection = \Drupal\Core\Database\Database::getConnection() ;
       foreach($selectedSuggestions as $suggestion){
 
-       
+       if(in_array($suggestion,$existingSuggestionIds)){
+        $query = $connection->update('niv_suggestion_mapping')->fields(['suggestion_status'=>1 ])
+        ->condition('suggestion_id',$suggestion,'=' )
+        ->condition('profile_id',$profile_id,'=' )
+        ->execute();
+       }
+       else{
+        //dump([ 'profile_id' => $profile_id, 'submission_id' => $submission_id, 'suggestion_id' => $suggestion ]);
+        //die;
         $connection->insert('niv_suggestion_mapping')->fields([ 'profile_id' => $profile_id, 'submission_id' => $submission_id, 'suggestion_id' => $suggestion ]) ->execute();
-
+       }
       }
     }
    

@@ -247,4 +247,75 @@ function profilesByuser($userId){
   
 }
 
+function getDailyProgress($profileId){
+
+   $connection = \Drupal::database();
+  $query = $connection->select('niv_suggestion_submissions','nss');
+  $query->join('node_field_data', 'nfd', 'nfd.nid = nss.suggestion_id');
+  $query->fields('nfd', array('title'));
+  $query->fields('nss', array('suggestion_value','submitted_date','id'));
+ 
+  $query->condition('nss.profile_id', $profileId, '=')
+  ->orderBy('nss.submitted_date', 'ASC');
+  
+      
+  $result = $query->execute()->fetchAll();
+  
+ 
+$formattedArray = [];
+
+if($result){
+  foreach($result as $record){
+  
+    $formattedArray[$record->submitted_date][] = ['suggestion'=>$record->title,'value'=>$record->suggestion_value];
+    
+  
+  }
+}
+
+   foreach ($formattedArray as $key=>$value) {
+
+    $suggestions['suggestions']['#attributes'] = array(
+      'class' => array( 'daily-progress'),
+    );
+  
+    $suggestions['suggestions'][$key] = array(
+      '#type' => 'table',
+      '#caption' => $this
+        ->t($key),
+      '#header' => array($this->t('#'),$this->t('Suggestion'),$this->t('Submitted Value')),
+    );
+    $row = [];
+    foreach($value as $subkey=>$submission){
+
+        $serial = $subkey+1;
+        $suggestion_text = $submission['suggestion'];
+        $suggestion_value = $submission['value'];
+        $row[] = [$serial,$suggestion_text,$suggestion_value];
+    
+
+
+    }
+    $suggestions['suggestions'][$key]['#rows'] = $row;
+    $suggestions['suggestions'][$key]['#empty'] = $this->t('No data available');
+  
+  }
+
+  $profile = Node::load($profileId);
+  $name = $profile->title->value;
+	 $dob = $profile->field_date_of_birth->value;
+	 $dobYear = date('Y',strtotime($dob));
+	 $currentYear = date('Y');
+	 $age = $currentYear - $dobYear;
+	 $gender = $profile->field_gender->value;
+
+  $build['#theme'] = 'nivadmin_daily_progress_view';
+  $build['#data'] = array('profile_data'=>['name'=>$name,'age'=>$age,'gender'=>$gender],'suggestions'=>$suggestions);
+
+  return $build;
+
+
+
+}
+
 }

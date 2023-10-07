@@ -71,7 +71,7 @@ function niv_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state
 }
 
 //overriding user module save() as it is logging the user after registration
-function _saveuser_nologin(array $form, FormStateInterface $form_state){
+/*function _saveuser_nologin(array $form, FormStateInterface $form_state){
 	
 	//dump($form_state->getValues());
 	//die;
@@ -137,7 +137,7 @@ $account->activate();
       $this->messenger()->addStatus($this->t('Thank you for applying for an account. Your account is currently pending approval by the site administrator.<br />In the meantime, a welcome message with further instructions has been sent to your email address.'));
       $form_state->setRedirect('<front>');
     }
-}
+}*/
 
 function _niv_form_user_register_form_validate(array &$form, FormStateInterface $form_state) {
   $errors = $form_state->getErrors();
@@ -242,6 +242,18 @@ $theme_path = drupal_get_path('theme' , 'niv');
       'render element' => 'elements',
       'variables' => ['profiledata' => []]
     ],
+
+    'nivadmin_daily_progress_view' => [
+      'path' => $theme_path . '/templates',
+          'template' => 'nivadmin_daily_progress',
+          'render element' => 'elements',
+          'variables' => [
+            'data' => []
+          
+          ]
+          
+        ],
+      
 	
 	
 	
@@ -362,6 +374,7 @@ function _niv_get_profile_suggestions($profileId,$submissionId){
 					$query = $connection->select('niv_suggestion_mapping', 'n');
 					$query->condition('n.profile_id',$profileId );
 					$query->condition('n.submission_id', $submissionId);
+          $query->condition('n.suggestion_status',1,'=');
 					$query->fields('n', ['id', 'suggestion_id']);
 					$results = $query->execute()->fetchAllKeyed(0,1);
 					

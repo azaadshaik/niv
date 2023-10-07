@@ -58,6 +58,14 @@ niv.nivadmin_user_profile_list:
     _title: 'Profiles '
     _controller: '\Drupal\niv\Controller\NivController::profilesByuser'
   requirements:
-    _permission: 'access content'      
+    _permission: 'access content' 
+
+niv.nivadmin_profile_daily_progress:
+  path: '/nivadmin/dailyProgress/{profileId}'
+  defaults:
+    _title: 'Profiles '
+    _controller: '\Drupal\niv\Controller\NivController::getDailyProgress'
+  requirements:
+    _permission: 'access content'            
 
 

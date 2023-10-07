@@ -1,0 +1,36 @@
+<div class="container-fluid">
+      <div class="row">
+        <h2 class="col-md-4">Profile</h2>
+        <div class="col-md-8 text-end">
+          <div class="row">
+          <div class="col-md-9 mt-4">
+          <div class="col-md-12">
+          <label class="fw-bold">Name:&nbsp; </label><span>{{data.profile_data.name}}</span>
+        </div> 
+        <div class="col-md-12">
+          <label class="fw-bold">Age: &nbsp;</label><span>{{data.profile_data.age}} Y</span>
+        </div> 
+        <div class="col-md-12">
+          <label class="fw-bold">Gender: &nbsp;</label><span>{{data.profile_data.gender}}</span>
+        </div> 
+      
+      </div>
+        <div class="col-md-3"><img src="/themes/custom/niv/images/168724.png" class="img-thumbnail rounded-circle"   alt="..."></div>
+        </div>
+      </div>
+      </div>
+       <h4 >Daily Progress</h4> 
+       <div class="row daily-progress">
+        <div class="col-md-12">
+            {% if data.suggestions %}
+            {{ data.suggestions}}
+            {% else %}
+            No data available
+            {% endif %}
+
+      </div>
+      </div>
+
+
+  
+    </div>

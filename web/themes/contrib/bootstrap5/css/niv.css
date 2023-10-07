@@ -229,4 +229,30 @@ header .navbar-expand-lg.bg-dark {
 }
 
 
+.row.daily-progress thead,
+ .row.daily-progress tbody, 
+ .row.daily-progress tfoot, 
+ .row.daily-progress tr, 
+ .row.daily-progress td, 
+ .row.daily-progress th {
+  border-color: inherit;
+  border-style: solid;
+  border-width: 0;
+  min-width: 40px;
+  border: 1px solid;
+  padding: 5px ;
+
+}
+
+.node-organizations-edit-form .vertical-tabs{
+  display:none;
+}
+
+.node-organizations-edit-form #edit-field-location-wrapper,
+.node-organizations-form #edit-field-location-wrapper
+
+{
+  width:100% !important;
+}
+
 	
