@@ -17,6 +17,8 @@ use Drupal\Core\Logger;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\webform\WebformSubmissionInterface;
 use Drupal\Core\Site\Settings;
+use Drupal\user\Entity\User;
+
 
 
 /**
@@ -29,16 +31,38 @@ use Drupal\Core\Site\Settings;
  */
  function niv_form_user_login_form_alter(&$form, &$form_state, $form_id) {
   // you code here
- // dump($form);
-  //echo "iam here";
-  //die;
+ 
+
 }
 
-function niv_form_user_form_alter(&$form, &$form_state, $form_id) {
-  // you code here
-  //dump($form);
-  //echo "iam here";
-  //die;
+function niv_form_user_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  
+  $roles = \Drupal::currentUser()->getRoles();
+	
+	
+	
+  if($form_id == 'user_register_form'  && !in_array('niv_admin', $roles)){
+    $form['actions']['submit']['#submit'][] = '_niv_user_register_submit_handler';
+
+    
+  }
+}
+function _niv_user_register_submit_handler(&$form, FormStateInterface $form_state){
+ $values =  $form_state->getValues();
+ if($values['rid']=='teacher'){
+   $orgKey = $values['field_organization_key'][0]['value'];
+   $query = \Drupal::entityQuery('node')
+    ->condition('type', 'organizations')
+    ->condition('field_organization_code', $orgKey, '=');
+    $nids = $query->execute();
+    $orgIds = array_values($nids);
+    $user = User::load(\Drupal::currentUser()->id());
+    $user->field_teacher_organization->target_id =  $orgIds[0] ;
+    $user->save();
+
+    
+ }
+ 
 }
 
 function niv_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
@@ -71,7 +95,7 @@ function niv_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state
 }
 
 //overriding user module save() as it is logging the user after registration
-/*function _saveuser_nologin(array $form, FormStateInterface $form_state){
+function _saveuser_nologin(array $form, FormStateInterface $form_state){
 	
 	//dump($form_state->getValues());
 	//die;
@@ -137,7 +161,7 @@ $account->activate();
       $this->messenger()->addStatus($this->t('Thank you for applying for an account. Your account is currently pending approval by the site administrator.<br />In the meantime, a welcome message with further instructions has been sent to your email address.'));
       $form_state->setRedirect('<front>');
     }
-}*/
+}
 
 function _niv_form_user_register_form_validate(array &$form, FormStateInterface $form_state) {
   $errors = $form_state->getErrors();
