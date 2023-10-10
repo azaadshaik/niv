@@ -178,10 +178,31 @@ form.user-pass #edit-actions.form-actions{    width: 100%;text-align: center;}
       display: inline-flex;
       margin: 0 20%;}
 
-
+      
 
       @media only screen and (max-width: 900px) {
-        .path-user .region-content{margin:0 !important;}
+        .js-form-item.form-item{margin-right:0 !important ;}
+        .layout .form-wrapper{margin:0 !important}
+        #edit-account.js-form-wrapper.form-wrapper{width:100%;margin: 0 !important;}
+        #edit-account .form-item-mail, #edit-account .password-parent, #edit-account .confirm-parent, #edit-pass--description.description{margin-right:0 !important;width:100%;}
+        .user-logged-in.path-user .region-content{margin:20px 10px !important;}
+        .layout .form-wrapper{width: 100%;}
+        .profile .block-layout-builder, .node__content .field--label-above{width:48%;}
+        .region-sidebar-first{margin:20px 0 !important}
+        .region-content {
+          padding: 0;
+          margin: 20px 10px !important;
+      }
+      .user-logged-in .dialog-off-canvas-main-canvas main .container > .row,
+        .user-logged-in.path-nivadmin .dialog-off-canvas-main-canvas main .container > .row,
+        .user-logged-in.page-node-type-organizations .dialog-off-canvas-main-canvas main .container > .row{ flex-direction: column-reverse;}
+        form.user-pass{padding: 40px 20px;}
+        .row.registration-links a{padding: 4px 40px;}
+        .path-user .region-content{margin:20px 0px !important;}
+        .row.registration-links{margin: 20px 0px;width: 100%;}
+        .row.registration-links .col-sm-6.col-lg-6{width: 50%;margin: 0;padding: 0;}
+        .path-frontpage .region-content, .path-user .region-content{margin:50px 0 !important;}
+       
       }
 	  
 /** Temporary need to fix**/  
