@@ -66,6 +66,17 @@ niv.nivadmin_profile_daily_progress:
     _title: 'Profiles '
     _controller: '\Drupal\niv\Controller\NivController::getDailyProgress'
   requirements:
-    _permission: 'access content'            
+    _permission: 'access content'   
+    
+niv.load_result:
+  path: '/result/{profileId}/{submissionId}'
+  defaults:
+    _title: 'Results '
+    _controller: '\Drupal\niv\Controller\NivController::loadAssessmentResult'
+  options:
+    parameters:
+  requirements:
+    _permission: 'access content'    
+             
 
 

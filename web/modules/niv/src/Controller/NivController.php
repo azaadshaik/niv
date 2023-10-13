@@ -6,6 +6,7 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Entity\webform;
 use Drupal\Core\Site\Settings;
 use Drupal\node\Entity\Node;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Returns responses for niv routes.
@@ -317,5 +318,118 @@ if($result){
 
 
 }
+
+
+public function loadAssessmentResult($profileId,$submissionId) {
+
+
+
+  $entity = \Drupal::entityTypeManager()->getStorage('node')->load($profileId);
+      
+  $values = ['entity_id'=>$profileId,'sid'=>$submissionId];
+    $submission = \Drupal::entityTypeManager()
+->getStorage('webform_submission')
+->loadByProperties($values);
+$data = $submission[$submissionId]->getData();
+/********************************************************888 */
+$form_config = \Drupal::config('webform.webform.form_a_parent')->get('elements');
+ksort($data);
+
+$parsed_elements = Yaml::parse($form_config);
+$i = 1;
+$fieldsets = [];
+$tables = [];
+$rows[] =[0,0,0,0,0];
+
+$header = array($this->t('#'),$this->t('Question'),$this->t('Attribute'),$this->t('Answer'),$this->t('Score'));
+foreach($parsed_elements as $elekey=>$element){
+
+  //fieldset here
+  
+  //table here
+  $eleKeyArr = explode('_',$elekey);
+  $element_fieldset = 'fieldset';
+  for($i=1;$i<=count($eleKeyArr);$i++){
+    $element_fieldset.='_'.$eleKeyArr[$i];
+  }
+  $element_fieldset = rtrim($element_fieldset,'_');
+ $fieldsets[] = $element[$element_fieldset]['#title'];
+
+ $output[] = array(
+  'fieldset' => array(
+    '#type' => 'details',
+    '#title' => t( $element[$element_fieldset]['#title']),
+    '#attributes' => array('class' => array('collapsible', 'collapsed','result_table_admin_view'),'id'=>'result_table_admin_view','open'=>'open'),
+    'content' => [
+
+      array(
+        '#type' => 'table',
+        '#caption' => '',
+        '#header' => $header,
+        '#attributes' => array('class' => array('table', 'table-striped')),
+      )
+    ],
+  ),
+
+);
+
+
+ foreach($data as $key=>$dataValue){
+  
+  if(isset($element[$element_fieldset][$key])){
+
+    //echo $key;
+    $attribute = isset($element[$element_fieldset][$key]['#attributes']['attribute'])?$element[$element_fieldset][$key]['#attributes']['attribute']:'';
+    $rows[] = [$key,$element[$element_fieldset][$key]['#title'],$attribute,$element[$element_fieldset][$key]['#options'][$dataValue],$dataValue];
+  }
+
+ // table rows here
+ }
+ 
+
+}
+
+array_shift($rows);
+ $chunks = array_chunk($rows,10,true);
+//dump($chunks);
+//die;
+
+foreach($chunks as $chunkKey=>$chunk){
+
+  //sort the rows by value before assigning to #row
+  //dump($chunk);
+  
+  $valuesArr = array_column($chunk, 4);
+  array_multisort($valuesArr, SORT_DESC, $chunk);
+
+  $formattedChunk = [];
+  foreach($chunk as $cKey => $chunkVal){
+    $chunkVal[0] = $cKey+1;
+    $formattedChunk[] = $chunkVal;
+  }
+ //$chunk = array_map('array_values',$chunk);
+ //dump($chunk);
+  $output[$chunkKey]['fieldset']['content'][0]['#rows'] = $formattedChunk;
+}
+//dump($output);
+//die;
+
+//$output['fieldset']['content']['#rows'] = $rows;
+return $output;
+// dump($rows);
+// echo count($rows);
+// die;
+
+/********************** */
+    
+   
+      // $build['content'] = [
+      //   '#type' => 'webform',
+      //   '#webform' => $webform,
+      //   ];
+  
+  
+      // return $build;
+    }
 
 }

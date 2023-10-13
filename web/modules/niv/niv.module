@@ -21,6 +21,8 @@ use Drupal\user\Entity\User;
 
 
 
+
+
 /**
  * @file
  * Primary module hooks for niv module.
@@ -42,12 +44,12 @@ function niv_form_user_form_alter(&$form, FormStateInterface $form_state, $form_
 	
 	
   if($form_id == 'user_register_form'  && !in_array('niv_admin', $roles)){
-    $form['actions']['submit']['#submit'][] = '_niv_user_register_submit_handler';
+  //  $form['actions']['submit']['#submit'][] = '_niv_user_register_submit_handler';
 
     
   }
 }
-function _niv_user_register_submit_handler(&$form, FormStateInterface $form_state){
+/*function _niv_user_register_submit_handler(&$form, FormStateInterface $form_state){
  $values =  $form_state->getValues();
  if($values['rid']=='teacher'){
    $orgKey = $values['field_organization_key'][0]['value'];
@@ -57,13 +59,16 @@ function _niv_user_register_submit_handler(&$form, FormStateInterface $form_stat
     $nids = $query->execute();
     $orgIds = array_values($nids);
     $user = User::load(\Drupal::currentUser()->id());
+    dump($form_state);
+    
+    die;
     $user->field_teacher_organization->target_id =  $orgIds[0] ;
     $user->save();
 
     
  }
  
-}
+}*/
 
 function niv_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
 
@@ -87,7 +92,7 @@ function niv_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state
 	 }
 	
       $new_validation = '_niv_form_user_register_form_validate';
-     // array_splice($form['#validate'], 3, 0, $new_validation);
+      array_splice($form['#validate'], 3, 0, $new_validation);
     break; 
    
   }
@@ -176,35 +181,41 @@ function _niv_form_user_register_form_validate(array &$form, FormStateInterface 
   
   
   if (!in_array('administrator', $roles) && !in_array('niv_admin', $roles)){
-  
-  if(!empty($values['field_organization_key'])){
+
+   
+ 
+  if(!empty($values['field_organization_key'][0]['value'])){
 	  
 	  $query = \Drupal::entityQuery('node')
     ->condition('type', 'organizations')
     ->condition('field_active', 1, '=');
     $nids = $query->execute();
     $nodes = Node::loadMultiple($nids);
-	
-	if(!empty($nodes)){
-	foreach($nodes as $node){
-      $org_secret_key = $node->get('field_organization_code')->getString();
-	  $org_keys_array[] = $org_secret_key;
-	  
-	}
-	
-	  
-      if(!in_array($values['field_organization_key'][0]['value'],$org_keys_array) ) {
-        
-		
-        $message ='Invalid organization Key';
-        $form_state->setErrorByName('field_organization_key', t($message));
-		
-		
-          
-      }
-      
     
+	if(!empty($nodes)){
+   $flag = 0; 
+	foreach($nodes as $node){
+   
+    $nid = $node->id();
+    $org_secret_key = $node->get('field_organization_code')->getString();
+    if($values['field_organization_key'][0]['value'] == $org_secret_key)  {
+         $values['field_teacher_organization'][0]['target_id'] = $nid;
+         $form_state->setValues($values);
+         $flag = 1;
+         break;
+
+    }
+    
+	}
+
+  if(!$flag){
+    $message ='Invalid organization Key';
+    $form_state->setErrorByName('field_organization_key', t($message));
+  }
+  
+  
 	
+		
 	}
 	else{
 		 $message ='Invalid organization Key';
@@ -421,9 +432,8 @@ $balance_and_motion_raw_score=0;
 $planning_and_ideas_raw_score=0;
 $social_participation_raw_score=0;
 
-//dump($submission);
-//dump( $submission[$submissionId]->getData());
 $data = $submission[$submissionId]->getData();
+
 
 foreach($data as $key=>$value){
 
