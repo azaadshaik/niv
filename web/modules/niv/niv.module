@@ -43,32 +43,28 @@ function niv_form_user_form_alter(&$form, FormStateInterface $form_state, $form_
 	
 	
 	
-  if($form_id == 'user_register_form'  && !in_array('niv_admin', $roles)){
-  //  $form['actions']['submit']['#submit'][] = '_niv_user_register_submit_handler';
-
-    
-  }
+  
 }
-/*function _niv_user_register_submit_handler(&$form, FormStateInterface $form_state){
- $values =  $form_state->getValues();
- if($values['rid']=='teacher'){
-   $orgKey = $values['field_organization_key'][0]['value'];
-   $query = \Drupal::entityQuery('node')
-    ->condition('type', 'organizations')
-    ->condition('field_organization_code', $orgKey, '=');
-    $nids = $query->execute();
-    $orgIds = array_values($nids);
-    $user = User::load(\Drupal::currentUser()->id());
-    dump($form_state);
-    
-    die;
-    $user->field_teacher_organization->target_id =  $orgIds[0] ;
-    $user->save();
 
-    
- }
+function niv_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+
+if($form_id == 'node_new_suggestions_form'){
+  array_unshift($form['actions']['submit']['#submit'], '_niv_suggestions_form_submit_handler');
+  
+}
+
+}
+
+function _niv_suggestions_form_submit_handler(&$form, FormStateInterface $form_state){
  
-}*/
+  $values =  $form_state->getValues();
+  $title = [];
+  $titleValue = $values['field_new_suggestion'][0]['value'];
+  $title[] = ['value'=>$titleValue];
+ $form_state->setValue('title',$title);
+ 
+  
+}
 
 function niv_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
 
@@ -271,6 +267,12 @@ $theme_path = drupal_get_path('theme' , 'niv');
       'render element' => 'elements',
       'variables' => ['data' => []]
     ],
+    'nivadmin_add_new_suggestions' => [
+      'path' => $theme_path . '/templates',
+          'template' => 'nivadmin_add_new_suggestions',
+          'render element' => 'elements',
+          'variables' => ['data' => []]
+        ],
 	'nivadmin_profile_view' => [
 	'path' => $theme_path . '/templates',
       'template' => 'nivadmin_profile_view',

@@ -8,13 +8,13 @@ use Drupal\Core\Url;
 /**
  * Implements an example form.
  */
-class adminSuggestionsForm extends FormBase {
+class adminNewSuggestionsForm extends FormBase {
 
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'admin_suggestions_form';
+    return 'admin_new_suggestions_form';
   }
 
   /**
@@ -26,45 +26,78 @@ class adminSuggestionsForm extends FormBase {
 					$query = $connection->select('niv_suggestion_mapping', 'n');
 					$query->condition('n.profile_id',$extra['profile_id'] );
 					$query->condition('n.submission_id', $extra['submission_id']);
-          $query->condition('n.suggestion_status', 1, '=');
+                    $query->condition('n.suggestion_status', 1, '=');
 					$query->fields('n', ['id', 'suggestion_id']);
 					$results = $query->execute()->fetchAllKeyed(0,1);
 					
-					
+					//dump($extra);
 					
     foreach($extra['suggestions'] as $key=>$suggestion){
 
+      //$label = $node->field_my_field->getSetting('allowed_values')[$node->field_my_field->value];  
+      //dump($suggestion->field_suggestion_section->getSetting('allowed_values'));
+      //dump($suggestion->field_suggestion_section->getString());
 
-      $sectionId = $suggestion->get('field_section')->referencedEntities()[0]->get('tid')->value;
-      $sectionName = $suggestion->get('field_section')->referencedEntities()[0]->get('name')->value;
+      //die;
+      $sectionName = $suggestion->field_suggestion_section->getSetting('allowed_values')[$suggestion->field_suggestion_section->getString()];
+      $attributeName = $suggestion->field_section_attribute->getSetting('allowed_values')[$suggestion->field_section_attribute->getString()];
 
       $elements[$sectionName][$key]['name'] = $sectionName;
-      $elements[$sectionName][$key]['suggestion_name'] = $suggestion->getTitle();
+      $elements[$sectionName][$key]['attribute'] = $attributeName;
+      $elements[$sectionName][$key]['suggestion'] = $suggestion->field_new_suggestion->getString();
+      $elements[$sectionName][$key]['attribute_key'] = $suggestion->field_section_attribute->getString();
 
     }
-   // dump($elements);
-    foreach($elements as $key1=>$element){
-    $form['section'][$key1][] = array(
-      '#type' => 'markup',
-      '#markup' => '<h6>'.$this->t($key1).'</h6>',
-    );
-    foreach($element as $key=>$value){
-      
 
-		if(in_array($key,$results)){
-			$default = $key;
-		
-		}
-      $form['section'][$key1][]['suggestion'] = array(
-        '#type' => 'checkbox',
-        '#title' => $this->t($value['suggestion_name']),
-        '#name'=>'suggestions[]',
-        '#return_value'=>$key,
-		'#default_value' => $default,
-      );
-    }
+    //dump($elements);
     
+    foreach($elements as $key1=>$element){
+       
+    $form['section'][$key1] = array(
+      '#type' => 'details',
+      '#title' => $this->t($key1),
+    );
+    
+    foreach($element as $key2=>$ele){
+
+        
+        $form['section'][$key1][$ele['attribute_key']] = array(
+
+            '#type' => 'markup',
+            '#markup' => '<h6 class="question-attribute">'.$this->t($ele['attribute']).'</h6>',
+        );
+        
+    }
+         
   }
+  foreach($elements as $key1=>$element){
+
+   
+    // dump($form);
+    // echo $key1;
+    // dump($element);
+     foreach($element as $k=>$v){
+
+        if(in_array($k,$results)){
+            $default = $k;
+        
+        }
+  $form['section'][$key1][$v['attribute_key']][$k] = array(
+    '#type' => 'checkbox',
+    '#title' => $this->t($v['suggestion']),
+    '#name'=>'suggestions[]',
+    '#attributes'=> ['class'=>['actual-question']],
+    '#return_value'=>$k,
+    '#default_value' => $default,
+  );
+}
+}
+
+
+
+    // dump($form);
+    // dump($elements);
+    // die;
 
   $form['profile_id'] = array(
 

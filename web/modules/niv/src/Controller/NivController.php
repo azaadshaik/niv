@@ -7,6 +7,7 @@ use Drupal\Entity\webform;
 use Drupal\Core\Site\Settings;
 use Drupal\node\Entity\Node;
 use Symfony\Component\Yaml\Yaml;
+use Drupal\user\Entity\User;
 
 /**
  * Returns responses for niv routes.
@@ -233,6 +234,47 @@ $webform = \Drupal::entityTypeManager()->getStorage('webform')->load($webformId)
 
   $build = [
     '#theme' => 'nivadmin_addsuggestions',
+    '#data' => ['suggestions_form'=>$form,'profile_data' => ['name'=>$name,'age'=>$age,'gender'=>$gender]],
+    
+   
+  ];
+
+  return $build;
+
+
+
+  }
+
+  function addNewSuggestions($profileId,$submissionId){
+
+    $profile = Node::load($profileId);
+    $name = $profile->title->value;
+    $dob = $profile->field_date_of_birth->value;
+    $dobYear = date('Y',strtotime($dob));
+    $currentYear = date('Y');
+    $age = $currentYear - $dobYear;
+    $gender = $profile->field_gender->value;
+    $user = User::load($profile->getOwnerId());  
+    $authorRoles = $user->getRoles();
+    
+   $form_type = ($authorRoles[1]=='parent')?'parent':'school';
+
+    $query = \Drupal::entityQuery('node')
+    ->condition('type', 'new_suggestions')
+    ->condition('field_form_type', $form_type, '=');
+   
+
+    
+  	$nids = $query->execute();
+  $suggestions = Node::loadMultiple($nids);
+  
+
+  $extra = ['submission_id'=>$submissionId,'profile_id'=>$profileId,'suggestions'=>$suggestions];
+  $form = \Drupal::formBuilder()->getForm('Drupal\niv\Form\adminNewSuggestionsForm',$extra);
+  
+
+  $build = [
+    '#theme' => 'nivadmin_add_new_suggestions',
     '#data' => ['suggestions_form'=>$form,'profile_data' => ['name'=>$name,'age'=>$age,'gender'=>$gender]],
     
    

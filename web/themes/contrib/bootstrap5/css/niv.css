@@ -269,11 +269,19 @@ header .navbar-expand-lg.bg-dark {
   display:none;
 }
 
+.page-node-type-new-suggestions .vertical-tabs{
+  display:none;
+}
+
 .node-organizations-edit-form #edit-field-location-wrapper,
 .node-organizations-form #edit-field-location-wrapper
 
 {
   width:100% !important;
+}
+
+.admin-new-suggestions-form .actual-question{
+  margin-left:30px;
 }
 
 	

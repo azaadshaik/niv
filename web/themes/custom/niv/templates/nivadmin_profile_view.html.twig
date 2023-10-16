@@ -82,7 +82,7 @@ canvas {
 
                   <div class="row">
                     <div class="col-md-12 text-end">
-                      <button class="btn btn-primary"><a style="text-decoration:none;" href="/nivadmin/addSuggestions/{{profiledata.nid}}/{{profiledata.sid}}">Update Suggestions</a></button>
+                      <button class="btn btn-primary"><a style="text-decoration:none;" href="/nivadmin/addNewSuggestions/{{profiledata.nid}}/{{profiledata.sid}}">Update Suggestions</a></button>
                       <button class="btn btn-primary"><a style="text-decoration:none;" href="/nivadmin/dailyProgress/{{profiledata.nid}}">View Daily Progress</a></button>
 
                     </div>
@@ -105,7 +105,12 @@ canvas {
                   {% if 'niv_admin' in user.getroles(TRUE)  %}
                   <div class="row">
                     <div class="col-md-12 text-end">
-                      <button class="btn btn-primary"><a style="text-decoration:none;" href="/nivadmin/addSuggestions/{{profiledata.nid}}/{{profiledata.sid}}">Add Suggestions</a></button>
+                      {#<button class="btn btn-primary">
+                      <a style="text-decoration:none;" href="/nivadmin/addSuggestions/{{profiledata.nid}}/{{profiledata.sid}}">Add Suggestions</a>
+                      </button>#}
+                      <button class="btn btn-primary">
+                      <a style="text-decoration:none;" href="/nivadmin/addNewSuggestions/{{profiledata.nid}}/{{profiledata.sid}}">Add Suggestions</a>
+                      </button>
                     </div>
                   </div>
                   {% endif %}
