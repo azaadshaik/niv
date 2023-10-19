@@ -480,6 +480,7 @@ function getSuggestionsLog($profileId,$submissionId){
      $header =  array($this->t('#'),$this->t('Form'),$this->t('Suggestion'),$this->t('Section'),$this->t('Attribute'));
      $i = 1;
     
+     if(!empty($result)){
      foreach($result as $record){
 
      
@@ -526,6 +527,15 @@ function getSuggestionsLog($profileId,$submissionId){
     //  echo "<pre>";
     
      $build[key($build)]['fieldset']['#attributes']['open'] = 'open';
+    }
+    else{
+
+      $build =  array(
+        '#markup' => 'No history yet',
+      );
+      
+
+    }
    
     return $build;
 } 
