@@ -458,20 +458,76 @@ foreach($chunks as $chunkKey=>$chunk){
 
 //$output['fieldset']['content']['#rows'] = $rows;
 return $output;
-// dump($rows);
-// echo count($rows);
-// die;
 
-/********************** */
-    
-   
-      // $build['content'] = [
-      //   '#type' => 'webform',
-      //   '#webform' => $webform,
-      //   ];
-  
-  
-      // return $build;
     }
 
+
+function getSuggestionsLog($profileId,$submissionId){
+
+      $connection = \Drupal::database();
+     $query = $connection->select('niv_suggestion_log','nsl');
+   //  $query->join('node_field_data', 'nfd', 'nfd.nid = nsl.suggestion_id');
+     $query->fields('nsl',['suggestion_id','date']);
+       
+     $query->condition('nsl.profile_id', $profileId, '=');
+     $query->condition('nsl.submission_id', $submissionId, '=')
+     ->groupBy('nsl.id','nsl.suggestion_id','nsl.date')
+     ->orderBy('nsl.date','DESC');
+
+     
+         
+     $result = $query->execute()->fetchAll();
+     $header =  array($this->t('#'),$this->t('Form'),$this->t('Suggestion'),$this->t('Section'),$this->t('Attribute'));
+     $i = 1;
+    
+     foreach($result as $record){
+
+     
+
+      $build[$record->date]  = array(
+        'fieldset' => array(
+          '#type' => 'details',
+          '#title' => t( $record->date),
+          '#attributes' => array('class' => array('collapsible', 'collapsed','result_table_admin_view'),'id'=>'result_table_admin_view'),
+          'content' => [
+      
+            array(
+              '#type' => 'table',
+              '#caption' => '',
+              '#header' => $header,
+              '#attributes' => array('class' => array('table', 'table-striped')),
+            )
+          ],
+        ),
+      
+      );
+      $rows =[];
+      
+      foreach($result as $record2){
+
+        if($record2->date == $record->date){
+
+          $node = Node::load($record2->suggestion_id);
+         // dump($node->field_new_suggestion->value);
+         $section = $node->field_suggestion_section->getSetting('allowed_values')[$node->field_suggestion_section->getString()];
+         $attribute = $node->field_section_attribute->getSetting('allowed_values')[$node->field_section_attribute->getString()];
+          $rows[] = [$i,$node->field_form_type->value,$node->field_new_suggestion->value,$section,$attribute];
+          $i++;
+
+      }
+    }
+   // dump($rows);
+    $build[$record->date]['fieldset']['content'][0]['#rows'] =$rows;
+    $rows = [];
+
+    $i++;
+      
+     }
+    //  echo "<pre>";
+    
+     $build[key($build)]['fieldset']['#attributes']['open'] = 'open';
+   
+    return $build;
+} 
+   
 }

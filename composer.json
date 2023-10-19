@@ -37,6 +37,7 @@
         "drupal/twig_debugger": "^1.1",
         "drupal/typed_data": "dev-1.x",
         "drupal/user_registrationpassword": "^2.0",
+        "drupal/view_custom_table": "2.0",
         "drupal/webform": "^6.1",
         "drupal/webform_quiz": "^2.1",
         "drupal/webform_views": "5.2"

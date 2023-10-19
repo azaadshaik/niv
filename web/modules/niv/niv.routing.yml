@@ -57,7 +57,15 @@ niv.nivadmin_add_new_suggestions:
     _title: 'Suggestions '
     _controller: '\Drupal\niv\Controller\NivController::addNewSuggestions'
   requirements:
-    _permission: 'access content'    
+    _permission: 'access content'   
+
+niv.nivadmin_suggestions_log:
+  path: '/nivadmin/suggestions-log/{profileId}/{submissionId}'
+  defaults:
+    _title: 'Suggestions History '
+    _controller: '\Drupal\niv\Controller\NivController::getSuggestionsLog'
+  requirements:
+    _permission: 'access content'      
 
 niv.nivadmin_user_profile_list:
   path: '/nivadmin/user-profiles/{userId}'

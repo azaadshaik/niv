@@ -176,8 +176,12 @@ class adminNewSuggestionsForm extends FormBase {
 
      
     if(!empty($selectedSuggestions)){
+
+
       //$connection = \Drupal\Core\Database\Database::getConnection() ;
       foreach($selectedSuggestions as $suggestion){
+        $connection->insert('niv_suggestion_log')->fields([ 'profile_id' => $profile_id, 'submission_id' => $submission_id, 'suggestion_id' => $suggestion ]) ->execute();
+    
 
        if(in_array($suggestion,$existingSuggestionIds)){
         $query = $connection->update('niv_suggestion_mapping')->fields(['suggestion_status'=>1 ])
