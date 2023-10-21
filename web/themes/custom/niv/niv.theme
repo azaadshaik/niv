@@ -1,8 +1,117 @@
 <?php
 
+
 function niv_theme_suggestions_alter(array &$suggestions, array $variables, $hook) {
 
   if ($hook == 'form' & !empty($variables['element']['#id'])) {
     $suggestions[] = 'form__' . str_replace('-', '_', $variables['element']['#id']);
   }
+}
+
+/**
+ * Implements template_preprocess_views_view_fields().
+ */
+function niv_preprocess_views_view_field(&$vars) {
+
+  
+ 
+ 
+
+  if($vars['view']->id() == 'niv_admin_all_profiles'){
+
+    //dump($vars['row']);
+    //dump($vars['field']);
+
+  }
+  // Print all available fields.
+//  foreach ($vars['view']->field as $key => $field) {
+    // We will print the field name.
+  //  print $key . '<HR>';
+    //dump($field);
+ // }
+ //dump($vars['view']->field);
+ // exit;
+
+  // To access current row entity.
+  $entity = $vars['row']->_entity;
+  $entity_id = $entity->id();
+  $values = ['entity_id'=>$entity_id,'in_draft'=>0];
+  //dump($vars['field']);
+  //echo $vars['field']->field;
+  //echo "<br>";
+ // dump($view->field);
+		$submissions = \Drupal::entityTypeManager()->getStorage('webform_submission')->loadByProperties($values);
+
+  // To access entities from relationship.
+  $entities = $vars['row']->_relationship_entities;
+
+  // When you find your field key use this code below.
+  if(isset($vars['view']) && ($vars['view']->id() == 'niv_admin_all_profiles') ) {
+    if (isset($vars['view']->field) && (count($vars['view']->field) > 0)) {
+      // if ($vars['field']->field == 'YOUR_FIELD_NAME')
+      if ($vars['field']->field == 'nothing' && $vars['field']->options['id'] == 'nothing') {
+       // dump($vars['field']);
+      $nothing_output = !empty($submissions) ? 'Submitted<br><a href="/result/'.$entity_id.'/'.key($submissions) .'">Report</a>':'Not Submitted';
+        $vars['output'] =  [
+          '#markup' => $nothing_output,
+        ];
+      }
+      if ($vars['field']->field == 'nothing' && $vars['field']->options['id'] == 'nothing_1') {
+
+
+        
+        if(!empty($submissions)){
+          $sid = key($submissions);
+          $connection = \Drupal::database();
+					$query = $connection->select('niv_suggestion_mapping', 'n');
+					$query->condition('n.profile_id',$entity_id );
+					$query->condition('n.submission_id', $sid);
+          $query->condition('n.suggestion_status',1,'=');
+					$query->fields('n', ['id', 'suggestion_id']);
+					$suggestions = $query->execute()->fetchAllKeyed(0,1);
+
+          
+            $nothing1_output = !empty($suggestions) ?'Added<br><a href="/nivadmin/addNewSuggestions/'.$entity_id.'/'.$sid.'">View</a>':'Added<br><a href="/nivadmin/addNewSuggestions/'.$entity_id.'/'.key($submissions).'">Add</a> ';
+
+          
+        }
+        else{
+            $nothing1_output = 'N/A';
+        }
+       
+          $vars['output'] =  [
+            '#markup' => $nothing1_output,
+          ];
+        }
+        if ($vars['field']->field == 'nothing' && $vars['field']->options['id'] == 'nothing_2') {
+
+
+        
+          if(!empty($submissions)){
+            $sid = key($submissions);
+            $connection = \Drupal::database();
+            $query = $connection->select('niv_suggestion_mapping', 'n');
+            $query->condition('n.profile_id',$entity_id );
+            $query->condition('n.submission_id', $sid);
+            $query->condition('n.suggestion_status',1,'=');
+            $query->fields('n', ['id', 'suggestion_id']);
+            $suggestions = $query->execute()->fetchAllKeyed(0,1);
+  
+           
+              $nothing2_output = !empty($suggestions) ?'<a href="/nivadmin/dailyProgress/'.$entity_id.'">View</a>':'N/A';
+  
+            
+          }
+          else{
+              $nothing2_output = 'N/A';
+          }
+         
+            $vars['output'] =  [
+              '#markup' => $nothing2_output,
+            ];
+          }
+    }
+  }
+
+ // die;
 }

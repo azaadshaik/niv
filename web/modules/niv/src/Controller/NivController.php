@@ -314,6 +314,7 @@ if($result){
     
   
   }
+  
 }
 
    foreach ($formattedArray as $key=>$value) {
@@ -476,7 +477,7 @@ function getSuggestionsLog($profileId,$submissionId){
 
      
          
-     $result = $query->execute()->fetchAll();
+     $result = $query->distinct()->execute()->fetchAll();
      $header =  array($this->t('#'),$this->t('Form'),$this->t('Suggestion'),$this->t('Section'),$this->t('Attribute'));
      $i = 1;
     
@@ -503,7 +504,7 @@ function getSuggestionsLog($profileId,$submissionId){
       
       );
       $rows =[];
-      
+      $i=1;
       foreach($result as $record2){
 
         if($record2->date == $record->date){
@@ -519,9 +520,9 @@ function getSuggestionsLog($profileId,$submissionId){
     }
    // dump($rows);
     $build[$record->date]['fieldset']['content'][0]['#rows'] =$rows;
-    $rows = [];
+   // $rows = [];
 
-    $i++;
+    //$i++;
       
      }
     //  echo "<pre>";
