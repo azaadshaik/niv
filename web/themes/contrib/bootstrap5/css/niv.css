@@ -218,9 +218,12 @@ header .navbar-expand-lg.bg-dark {
 
 .path-nivadmin .dashboard .d-block {
   display: block !important;
-  background-color: #3f51b5;
+  /* background-color: #3f51b5; */
+  /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#1e5799+0,7db9e8+100 */
+background: linear-gradient(45deg,  #1e5799 0%,#7db9e8 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+
   padding: 50px;
-  border-radius: 15px;
+  border-radius: 10px;
   
 }
 .path-nivadmin .dashboard .d-block a {
@@ -265,6 +268,21 @@ header .navbar-expand-lg.bg-dark {
 
 }
 
+/* .user-logged-in.path-user form.user-form #edit-account #edit-pass{width: 46%;
+  float: left;} */
+  .user-logged-in.path-user form.user-form  #edit-field-organization-wrapper{
+    width: 44%;
+    margin:0 1% 20px 1%;
+  }
+ 
+  .user-logged-in.path-user form.user-form .js-form-item.form-item-field-name-0-value{width: 94%;}
+  .user-logged-in.path-user form.user-form .js-form-item.form-item-mail{    width: 45%;}
+  .user-logged-in.path-user form.user-form #edit-actions.form-actions{width: 44% !important;}
+  [data-once="form-single-submit big-pipe-early-behaviors"] .form-type-checkbox.form-item-notify{width:45%;}
+  [data-once="form-single-submit big-pipe-early-behaviors"] #edit-submit{margin-left: 2%;}
+  [data-once="vertical-tabs-fragments form-single-submit detailsAria big-pipe-early-behaviors"] .form-item-title-0-value{width: 100%;}
+  table tr th{text-transform: capitalize;}
+  .path-nivadmin[data-once="big-pipe-early-behaviors"] .dashboard .d-block{    padding: 25px;    font-size: 24px;}
 .node-organizations-edit-form .vertical-tabs{
   display:none;
 }
