@@ -5,7 +5,14 @@
         attach: function (context, settings) {
 
 
-
+          var current = location.pathname;
+              $('.registration-links  a').each(function(){
+              var $this = $(this);
+              // if the current path is like this link, make it active
+              if($this.attr('href').indexOf(current) !== -1){
+                  $this.addClass('active');
+              }
+          })
 
           function getPerformanceIndex(value){
 

@@ -8,6 +8,19 @@ function niv_theme_suggestions_alter(array &$suggestions, array $variables, $hoo
   }
 }
 
+function niv_preprocess_menu__org_menu(&$variables) {
+
+ 
+  foreach($variables['items'] as $item){
+    $item['url']->setRouteParameter('arg_0',15);
+
+   
+  }
+  
+    
+
+}
+
 /**
  * Implements template_preprocess_views_view_fields().
  */
@@ -51,7 +64,7 @@ function niv_preprocess_views_view_field(&$vars) {
       // if ($vars['field']->field == 'YOUR_FIELD_NAME')
       if ($vars['field']->field == 'nothing' && $vars['field']->options['id'] == 'nothing') {
        // dump($vars['field']);
-      $nothing_output = !empty($submissions) ? 'Submitted<br><a href="/result/'.$entity_id.'/'.key($submissions) .'">Report</a>':'Not Submitted';
+      $nothing_output = !empty($submissions) ? 'Submitted<br><a style="text-decoration:none;" target="_blank" href="/result/'.$entity_id.'/'.key($submissions) .'">Report</a>':'Not Submitted';
         $vars['output'] =  [
           '#markup' => $nothing_output,
         ];
@@ -71,7 +84,7 @@ function niv_preprocess_views_view_field(&$vars) {
 					$suggestions = $query->execute()->fetchAllKeyed(0,1);
 
           
-            $nothing1_output = !empty($suggestions) ?'Added<br><a href="/nivadmin/addNewSuggestions/'.$entity_id.'/'.$sid.'">View</a>':'Added<br><a href="/nivadmin/addNewSuggestions/'.$entity_id.'/'.key($submissions).'">Add</a> ';
+            $nothing1_output = !empty($suggestions) ?'Sent<br><a style="text-decoration:none;" target="_blank" href="/nivadmin/addNewSuggestions/'.$entity_id.'/'.$sid.'">View</a>':'Not Sent<br><a target="_blank" style="text-decoration:none;" href="/nivadmin/addNewSuggestions/'.$entity_id.'/'.key($submissions).'">Send Now</a> ';
 
           
         }
@@ -98,7 +111,7 @@ function niv_preprocess_views_view_field(&$vars) {
             $suggestions = $query->execute()->fetchAllKeyed(0,1);
   
            
-              $nothing2_output = !empty($suggestions) ?'<a href="/nivadmin/dailyProgress/'.$entity_id.'">View</a>':'N/A';
+              $nothing2_output = !empty($suggestions) ?'<a style="text-decoration:none;" target="_blank" href="/nivadmin/dailyProgress/'.$entity_id.'">View</a>':'N/A';
   
             
           }

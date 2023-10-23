@@ -39,7 +39,15 @@ use Drupal\user\Entity\User;
 
 function niv_form_user_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   
+  
   $roles = \Drupal::currentUser()->getRoles();
+  
+
+  if(in_array('niv_admin',$roles)){
+    unset($form['account']['name']);
+    unset($form['account']['status']);
+  }
+  
 	
 	
 	
@@ -48,8 +56,16 @@ function niv_form_user_form_alter(&$form, FormStateInterface $form_state, $form_
 
 function niv_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
+  
+  
+  $roles = \Drupal::currentUser()->getRoles();
 if($form_id == 'node_new_suggestions_form'){
   array_unshift($form['actions']['submit']['#submit'], '_niv_suggestions_form_submit_handler');
+  
+}
+
+if($form_id == 'node_profile_form' && in_array('teacher',$roles)){
+  array_push($form['actions']['submit']['#submit'], '_niv_profile_form_submit_handler');
   
 }
 
@@ -62,6 +78,23 @@ function _niv_suggestions_form_submit_handler(&$form, FormStateInterface $form_s
   $titleValue = $values['field_new_suggestion'][0]['value'];
   $title[] = ['value'=>$titleValue];
  $form_state->setValue('title',$title);
+ 
+  
+}
+
+
+
+function _niv_profile_form_submit_handler(&$form, FormStateInterface $form_state){
+ 
+  $values =  $form_state->getValues();
+  $currentUser = \Drupal::currentUser();
+   $user= User::load(\Drupal::currentUser()->id());
+   $currentUserOrg = $user->field_teacher_organization->target_id;
+  $createdProfile = Node::load($values['nid']);
+  $createdProfile->field_profile_organization->target_id = $currentUserOrg;
+  $createdProfile->save();
+
+  
  
   
 }
@@ -315,7 +348,7 @@ foreach($nodes as $node){
 					$build['#profiledata']['sid'] = $submission_id;
 					$token = $submission->get('token')->value;
 					$form = ['name'=>$node->title->value,'form_link'=>'/webform/'.$node->field_webform->target_id.'/submissions/'.$submission_id.'?token='.$token.'&profile='.$nid,'status'=>1];
-					$indexValues = _niv_get_index_values($nid,$submission_id);
+					$indexValues = _niv_get_index_values($node->field_webform->target_id,$nid,$submission_id);
 					
 					
 					$suggestions = _niv_get_profile_suggestions($nid,$submission_id);
@@ -385,7 +418,8 @@ function _niv_get_profile_suggestions($profileId,$submissionId){
 }
 
 
-function _niv_get_index_values($profileId,$submissionId){
+function _niv_get_index_values($form_type,$profileId,$submissionId){
+ 
 	$values = ['entity_id'=>$profileId,'sid'=>$submissionId];
     $submission = \Drupal::entityTypeManager()
 ->getStorage('webform_submission')
@@ -448,8 +482,8 @@ $total_raw_score = $vision_raw_score + $hearing_raw_score + $touch_raw_score + $
 // echo 'Total raw Scores ( except Social Participation and Planning and Ideas):'. $total_raw_score."<br>";
 
 //dump(Settings::get('t-score-matrix'));
-
-$tscore_matrix = Settings::get('t_score_home_matrix');
+$score_matrix_key = ($form_type == 'form_a') ?'t_score_school_matrix':'t_score_home_matrix';
+$tscore_matrix = Settings::get($score_matrix_key);
 $nivscore_matrix = Settings::get('t_score_niv_score_matrix');
 $niv_constants = Settings::get('niv_constants');
 $ei_constants = $niv_constants['engagement_index'];
