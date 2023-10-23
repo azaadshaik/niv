@@ -215,7 +215,9 @@ header .navbar-expand-lg.bg-dark {
 .webform-submission-information.card {
 	display:none;
 }
-
+table tr th{border-right:1px solid #ffffff;color:#ffffff;/* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#1e5799+0,6ba2c6+100 */
+  background: linear-gradient(to bottom,  #1e5799 0%,#6ba2c6 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  }
 .path-nivadmin .dashboard .d-block {
   display: block !important;
   /* background-color: #3f51b5; */
