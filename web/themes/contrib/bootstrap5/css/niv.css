@@ -106,7 +106,7 @@ form.user-pass #edit-actions.form-actions{    width: 100%;text-align: center;}
 .disabled:hover{box-shadow: none !important; cursor: none !important;}
 .disabled:hover > a{cursor: none !important;}
   .region-sidebar-first .navbar-nav .nav-link{background-color: #13388e;
-    margin-bottom: 5px;
+    margin-bottom:10px;
     color: #ffffff;
     padding:8px 10px;border-radius: 3px;}
     .region-sidebar-first .navbar-nav .nav-link:hover,
