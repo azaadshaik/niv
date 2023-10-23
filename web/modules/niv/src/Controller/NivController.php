@@ -303,7 +303,7 @@ function getDailyProgress($profileId){
   
       
   $result = $query->execute()->fetchAll();
-  
+  $suggestions =[];
  
 $formattedArray = [];
 

@@ -70,6 +70,7 @@ class adminNewSuggestionsForm extends FormBase {
     }
          
   }
+  $default = '';
   foreach($elements as $key1=>$element){
 
    
