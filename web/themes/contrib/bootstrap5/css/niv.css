@@ -304,4 +304,12 @@ background: linear-gradient(45deg,  #1e5799 0%,#7db9e8 100%); /* W3C, IE10+, FF1
   margin-left:30px;
 }
 
+#views-exposed-form-niv-admin-all-profiles-page-1 .form-actions{
+  width:10%;
+}
+
+.user-register-form .form-item-name{
+  display:none;
+}
+
 	

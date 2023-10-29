@@ -42,10 +42,11 @@ function niv_form_user_form_alter(&$form, FormStateInterface $form_state, $form_
   
   $roles = \Drupal::currentUser()->getRoles();
   
-
   if(in_array('niv_admin',$roles)){
-    unset($form['account']['name']);
+    //unset($form['account']['name']);
+   // $form['account']['name']['#attributes']['style']="display:none;";
     unset($form['account']['status']);
+    unset($form['account']['notify']);
   }
   
 	
@@ -106,20 +107,24 @@ function niv_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state
 	  
 
     case 'user_register_form':
+
+     
 	$roles = \Drupal::currentUser()->getRoles();
 	
 	
 	 if (in_array('niv_admin', $roles)){
+    
+    $form['account']['mail']['#required'] = true;
 		$form['#theme'] = 'org_admin_reg';
 		$form['actions']['submit']['#submit'][1] = '_saveuser_nologin';
+   // $form['account']['name']['#required'] = FALSE;
 		//unset($form['actions']['submit']['#submit'][1]);
-		//dump($form);
-	//die;
+	
 	 }
 	 else if(in_array('anonymous', $roles)){
 		 $form['#theme'] = 'parent_teacher_reg';
 	 }
-	
+	  
       $new_validation = '_niv_form_user_register_form_validate';
       array_splice($form['#validate'], 3, 0, $new_validation);
     break; 
@@ -131,10 +136,12 @@ function niv_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state
 //overriding user module save() as it is logging the user after registration
 function _saveuser_nologin(array $form, FormStateInterface $form_state){
 	
-	
+ 
 	 $account = Drupal\user\Entity\User::create();
 	 
 	 $account->setUsername($form_state->getValue('mail'));
+   
+
     $pass =$form_state->getValue('pass');
     $admin = $form_state->getValue('administer_users');
     $notify = !$form_state->isValueEmpty('notify');
@@ -164,12 +171,17 @@ $account->activate();
 }
 
 function _niv_form_user_register_form_validate(array &$form, FormStateInterface $form_state) {
+
+
   $errors = $form_state->getErrors();
-  
+   
   $values = $form_state->getValues();
-  
 
   
+ 
+  
+  
+
   $org_keys_array = [];
   $roles = \Drupal::currentUser()->getRoles();
   
