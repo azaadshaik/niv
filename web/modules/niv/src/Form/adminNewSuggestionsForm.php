@@ -17,6 +17,9 @@ class adminNewSuggestionsForm extends FormBase {
     return 'admin_new_suggestions_form';
   }
 
+  
+
+
   /**
    * {@inheritdoc}
    */
@@ -63,8 +66,9 @@ class adminNewSuggestionsForm extends FormBase {
         
         $form['section'][$key1][$ele['attribute_key']] = array(
 
-            '#type' => 'markup',
-            '#markup' => '<h6 class="question-attribute">'.$this->t($ele['attribute']).'</h6>',
+            '#type' => 'details',
+            //'#markup' => '<h6 class="question-attribute">'.$this->t($ele['attribute']).'</h6>',
+            '#title' => $this->t($ele['attribute']),
         );
         
     }
@@ -151,6 +155,7 @@ class adminNewSuggestionsForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
 
+    
    
     $selectedSuggestions = $form_state->getUserInput()['suggestions'];
     $profile_id = $form_state->getUserInput()['profile_id'];

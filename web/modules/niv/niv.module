@@ -55,12 +55,28 @@ function niv_form_user_form_alter(&$form, FormStateInterface $form_state, $form_
   
 }
 
+function _niv_suggestion_validate(&$form, FormStateInterface $form_state){
+
+  
+  $attribute = $form_state->getValue('field_selected_attribute_value');
+  $form_state->setValue('field_section_attribute',$attribute);
+  
+
+}
+
 function niv_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
   
   
   $roles = \Drupal::currentUser()->getRoles();
 if($form_id == 'node_new_suggestions_form'){
+  
+  array_unshift($form['#validate'],'_niv_suggestion_validate');
+  $form['field_section_attribute']['#disabled'] = TRUE;
+  $form['field_selected_attribute_value']['#attributes']['class'] = 'hide';
+  //dump($form);
+  //die;
+   
   array_unshift($form['actions']['submit']['#submit'], '_niv_suggestions_form_submit_handler');
   
 }
@@ -74,6 +90,7 @@ if($form_id == 'node_profile_form' && in_array('teacher',$roles)){
 
 function _niv_suggestions_form_submit_handler(&$form, FormStateInterface $form_state){
  
+  
   $values =  $form_state->getValues();
   $title = [];
   $titleValue = $values['field_new_suggestion'][0]['value'];
@@ -128,6 +145,12 @@ function niv_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state
       $new_validation = '_niv_form_user_register_form_validate';
       array_splice($form['#validate'], 3, 0, $new_validation);
     break; 
+
+   /* case 'webform_submission_form_a_parent_add_form':
+    case 'webform_submission_form_a_add_form': 
+      $form['actions']['submit']['#submit'][] = '_niv_save_scores';
+     
+      break; */
    
   }
  
@@ -407,9 +430,129 @@ $build['#profiledata']['suggestionsData'] = $suggestionsData;
 }
 
 
+/*function _niv_save_scores(array &$form, FormStateInterface $form_state){
+
+  
+  
+ // $current_data = $webform_submission->getData(); 
+ // dump($current_data);
+ // dump($webform_submission);
+ dump($form);
+ dump($form_state);
+  die;
+  $vision_raw_score = 0;
+  $hearing_raw_score =0;
+  $touch_raw_score=0;
+  $taste_and_smell_raw_score=0;
+  $body_awareness_raw_score=0;
+  $balance_and_motion_raw_score=0;
+  $planning_and_ideas_raw_score=0;
+  $social_participation_raw_score=0;
+  foreach($current_data as $key=>$value){
+  
+    
+    if((int) $key>=1 && (int) $key<=10){
+        $vision_raw_score = $vision_raw_score+ (int) $value;
+    }
+    elseif((int) $key>=11 && (int) $key<=20){
+      $hearing_raw_score = $hearing_raw_score+ (int) $value;
+  }
+  if((int) $key>=21 && (int) $key<=30){
+    $touch_raw_score = $touch_raw_score+ (int) $value;
+  }
+  if((int) $key>=31 && (int) $key<=40){
+    $taste_and_smell_raw_score = $taste_and_smell_raw_score+ (int) $value;
+  }
+  if((int) $key>=41 && (int) $key<=50){
+    $body_awareness_raw_score = $body_awareness_raw_score+ (int) $value;
+  }
+  if((int) $key>=51 && (int) $key<=60){
+    $balance_and_motion_raw_score = $balance_and_motion_raw_score+ (int) $value;
+  }
+  if((int) $key>=61 && (int) $key<=70){
+    $planning_and_ideas_raw_score = $planning_and_ideas_raw_score+ (int) $value;
+  }
+  if((int) $key>=71 && (int) $key<=80){
+    $social_participation_raw_score = $social_participation_raw_score+ (int) $value;
+  }
+    
+  
+  
+  }
+  $total_raw_score = $vision_raw_score + $hearing_raw_score + $touch_raw_score + $taste_and_smell_raw_score + $body_awareness_raw_score + $balance_and_motion_raw_score;
+  
+  // echo 'Vision Raw Score:'.$vision_raw_score."<br>";
+  // echo 'Hearing Raw Score:'.$hearing_raw_score."<br>";
+  // echo 'Touch Raw Score:'.$touch_raw_score."<br>";
+  // echo 'Taste And Smell Raw Score:'.$taste_and_smell_raw_score."<br>";
+  // echo 'Body Awareness Raw Score:'.$body_awareness_raw_score."<br>";
+  // echo 'Balance and Motion Raw Score:'.$balance_and_motion_raw_score."<br>";
+  // echo 'Planning nad Ideas Raw Score:'.$planning_and_ideas_raw_score."<br>";
+  // echo 'Social Participation Raw Score:'.$social_participation_raw_score."<br>";
+  
+  // echo 'Total raw Scores ( except Social Participation and Planning and Ideas):'. $total_raw_score."<br>";
+  
+  //dump(Settings::get('t-score-matrix'));
+  $score_matrix_key = ($form_type == 'form_a') ?'t_score_school_matrix':'t_score_home_matrix';
+  $tscore_matrix = Settings::get($score_matrix_key);
+  $nivscore_matrix = Settings::get('t_score_niv_score_matrix');
+  $niv_constants = Settings::get('niv_constants');
+  $ei_constants = $niv_constants['engagement_index'];
+  $att_constants = $niv_constants['attention_index'];
+  
+  
+  $vision_tscore = $tscore_matrix['vision_raw_score'][$vision_raw_score];
+  $hearing_tscore = $tscore_matrix['hearing_raw_score'][$hearing_raw_score];
+  $touch_tscore = $tscore_matrix['touch_raw_score'][$touch_raw_score];
+  $taste_tscore = $tscore_matrix['taste_raw_score'][$taste_and_smell_raw_score];
+  $body_tscore = $tscore_matrix['body_raw_score'][$body_awareness_raw_score];
+  $balance_tscore = $tscore_matrix['balance_raw_score'][$balance_and_motion_raw_score];
+  $planning_tscore = $tscore_matrix['planning_raw_score'][$planning_and_ideas_raw_score];
+  $social_tscore = $tscore_matrix['social_raw_score'][$social_participation_raw_score];
+  
+  // echo 'social tscore: '.$social_tscore."<br>";
+  
+  $vision_niv_score = $nivscore_matrix[$vision_tscore];
+  $hearing_niv_score = $nivscore_matrix[$hearing_tscore];
+  $touch_niv_score = $nivscore_matrix[$touch_tscore];
+  $taste_niv_score = $nivscore_matrix[$taste_tscore];
+  $body_niv_score = $nivscore_matrix[$body_tscore];
+  $balance_niv_score = $nivscore_matrix[$balance_tscore];
+  $planning_niv_score = $nivscore_matrix[$planning_tscore];
+  $social_niv_score = $nivscore_matrix[$social_tscore];
+  
+  //echo 'social niv score: '.$social_niv_score."<br>";
+  
+  $ei_social = ($ei_constants['social'] * $social_niv_score) / 100;
+  $ei_visual = ($ei_constants['vision'] * $vision_niv_score) / 100;
+  $ei_hearing = ($ei_constants['hearing'] * $hearing_niv_score) / 100;
+  $ei_body = ($ei_constants['body'] * $body_niv_score) / 100;
+  $ei_touch = ($ei_constants['touch'] * $touch_niv_score) / 100;
+  $ei_balance = ($ei_constants['balance'] * $balance_niv_score) / 100;
+  $ei_planning = ($ei_constants['planning'] * $planning_niv_score) / 100;
+  
+  
+  $engagementIndex = $ei_social + $ei_visual + $ei_hearing + $ei_touch + $ei_body + $ei_balance + $ei_planning;
+  
+  
+  $att_social = ($att_constants['social'] * $social_niv_score) / 100;
+  $att_visual = ($att_constants['vision'] * $vision_niv_score) / 100;
+  $att_hearing = ($att_constants['hearing'] * $hearing_niv_score) / 100;
+  $att_body = ($att_constants['body'] * $body_niv_score) / 100;
+  $att_touch = ($att_constants['touch'] * $touch_niv_score) / 100;
+  $att_balance = ($att_constants['balance'] * $balance_niv_score) / 100;
+  $att_planning = ($att_constants['planning'] * $planning_niv_score) / 100;
+  
+  $attentionIndex = $att_social + $att_visual + $att_hearing + $att_touch + $att_body + $att_balance + $att_planning;
+  
+  $performanceIndex = ($engagementIndex + $attentionIndex) /2 ;
+  
+
+  die;
+}*/
 function niv_webform_submission_presave(WebformSubmissionInterface $webform_submission) {
-  //$current_data = $webform_submission->getData(); 
-  //dump($webform_submission->entity_id->value);
+  
+  
    $entity_id = \Drupal::request()->query->get('profile');
   $webform_submission->set('entity_id',$entity_id);
   $webform_submission->set('entity_type','node');
@@ -519,7 +662,7 @@ $touch_niv_score = $nivscore_matrix[$touch_tscore];
 $taste_niv_score = $nivscore_matrix[$taste_tscore];
 $body_niv_score = $nivscore_matrix[$body_tscore];
 $balance_niv_score = $nivscore_matrix[$balance_tscore];
-$planning_niv_sscore = $nivscore_matrix[$planning_tscore];
+$planning_niv_score = $nivscore_matrix[$planning_tscore];
 $social_niv_score = $nivscore_matrix[$social_tscore];
 
 //echo 'social niv score: '.$social_niv_score."<br>";
@@ -530,7 +673,7 @@ $ei_hearing = ($ei_constants['hearing'] * $hearing_niv_score) / 100;
 $ei_body = ($ei_constants['body'] * $body_niv_score) / 100;
 $ei_touch = ($ei_constants['touch'] * $touch_niv_score) / 100;
 $ei_balance = ($ei_constants['balance'] * $balance_niv_score) / 100;
-$ei_planning = ($ei_constants['planning'] * $planning_niv_sscore) / 100;
+$ei_planning = ($ei_constants['planning'] * $planning_niv_score) / 100;
 
 
 $engagementIndex = $ei_social + $ei_visual + $ei_hearing + $ei_touch + $ei_body + $ei_balance + $ei_planning;
@@ -542,13 +685,45 @@ $att_hearing = ($att_constants['hearing'] * $hearing_niv_score) / 100;
 $att_body = ($att_constants['body'] * $body_niv_score) / 100;
 $att_touch = ($att_constants['touch'] * $touch_niv_score) / 100;
 $att_balance = ($att_constants['balance'] * $balance_niv_score) / 100;
-$att_planning = ($att_constants['planning'] * $planning_niv_sscore) / 100;
+$att_planning = ($att_constants['planning'] * $planning_niv_score) / 100;
 
 $attentionIndex = $att_social + $att_visual + $att_hearing + $att_touch + $att_body + $att_balance + $att_planning;
 
 $performanceIndex = ($engagementIndex + $attentionIndex) /2 ;
 
-return ['performanceIndex'=> $performanceIndex,'attentionIndex'=> $attentionIndex,'engagementIndex'=> $engagementIndex];
+$header = ['Title','Vision','Hearing','Touch','Taste','Body','Balance','Planning','Social','Total'];
+
+
+$rows[] = ['Raw Scores',$vision_raw_score,$hearing_raw_score,$touch_raw_score,$taste_and_smell_raw_score,$body_awareness_raw_score,$balance_and_motion_raw_score,$planning_and_ideas_raw_score,$social_participation_raw_score,$total_raw_score];
+$rows[] = ['T Scores',$vision_tscore,$hearing_tscore,$touch_tscore,$taste_tscore,$body_tscore,$balance_tscore,$planning_tscore,$social_tscore,'--'];
+$rows[] = ['NIV Scores',$vision_niv_score,$hearing_niv_score,$touch_niv_score,$taste_niv_score,$body_niv_score,$balance_niv_score,$planning_niv_score,$social_niv_score,'--'];
+//$rows[] = ['Engagement Index',$ei_visual,$ei_hearing,$ei_touch,'--',$ei_body,$ei_balance,$ei_planning,$ei_social,'--'];
+$rows[] = ['Engagement Index',$ei_visual,$ei_hearing,$ei_touch,'--',$ei_body,$ei_balance,$ei_planning,$ei_social,$engagementIndex];
+$rows[] = ['Attention Index',$att_visual,$att_hearing,$att_touch,'--',$att_body,$att_balance,$att_planning,$att_social,$attentionIndex];
+
+
+
+$score_details = array(
+  'fieldset' => array(
+    '#type' => 'details',
+    '#title' => t('View scores summary'),
+    '#attributes' => array('class' => array('collapsible', 'collapsed','result_table_admin_view'),'id'=>'result_table_admin_view'),
+    'content' => [
+
+      array(
+        '#type' => 'table',
+        '#caption' => '',
+        '#header' => $header,
+        '#rows' => $rows,
+        '#attributes' => array('class' => array('table', 'table-striped')),
+      )
+    ],
+  ),
+
+);
+
+
+return ['performanceIndex'=> $performanceIndex,'attentionIndex'=> $attentionIndex,'engagementIndex'=> $engagementIndex,'scoreDetails'=>$score_details];
 
 // echo 'Engagement Index :' .$engagementIndex."<br>";
 // echo 'Attention Index :' .$attentionIndex."<br>";

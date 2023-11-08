@@ -40,10 +40,14 @@ class profileSuggestionsForm extends FormBase {
 				  
 				);
 					
+    if(!empty($results)){    
     foreach($results as $suggestion_id){
 
+      
 	
 	$suggestion = Node::load($suggestion_id);
+  
+ 
 	 $form[$suggestion_id] = array(
 				  '#type' => 'radios',
 				  '#title' => $this
@@ -66,6 +70,7 @@ class profileSuggestionsForm extends FormBase {
 				);
 
      }
+    }
    
   $form['profile_id'] = array(
 

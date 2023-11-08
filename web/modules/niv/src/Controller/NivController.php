@@ -8,6 +8,7 @@ use Drupal\Core\Site\Settings;
 use Drupal\node\Entity\Node;
 use Symfony\Component\Yaml\Yaml;
 use Drupal\user\Entity\User;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Returns responses for niv routes.
@@ -539,6 +540,16 @@ function getSuggestionsLog($profileId,$submissionId){
     }
    
     return $build;
-} 
+}
+
+
+function getSectionAttributes($formType,$section){
+
+  $attributesKey = ($formType=='parent') ? 'home_section_attributes':'school_section_attributes';
+  $attributesArray = Settings::get($attributesKey);
+  $response = $attributesArray[$section];
+  return new JsonResponse($response);
+
+}
    
 }

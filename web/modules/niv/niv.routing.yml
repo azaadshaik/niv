@@ -91,7 +91,17 @@ niv.load_result:
   options:
     parameters:
   requirements:
-    _permission: 'access content'    
+    _permission: 'access content' 
+
+niv.load_attributes:
+  path: '/getAttributes/{formType}/{section}'
+  defaults:
+    _title: ' '
+    _controller: '\Drupal\niv\Controller\NivController::getSectionAttributes'
+  options:
+    parameters:
+  requirements:
+    _permission: 'access content'        
              
 
 

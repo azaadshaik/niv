@@ -12,7 +12,60 @@
               if($this.attr('href').indexOf(current) !== -1){
                   $this.addClass('active');
               }
-          })
+          });
+
+          $('select#edit-field-section-attribute').on('change',function(){
+
+            var attribute =  $('#edit-field-section-attribute').val();
+            
+            $('#edit-field-selected-attribute-value-0-value').val(attribute) ;
+
+          });
+          $('select#edit-field-form-type,select#edit-field-suggestion-section').on('change',function(){
+            
+            var section = $('#edit-field-suggestion-section').val();
+            var formtype = $('#edit-field-form-type').val();
+            //alert(formtype);
+            //alert(section);
+            if(section !='_none' && formtype != '_none'){
+
+              $('#edit-field-section-attribute').attr('disabled','disabled');
+
+            $.ajax({
+              type: "GET",
+              url: '/getAttributes/'+formtype+'/'+section,
+                         
+              dataType: 'json',
+              success : function(result){
+                
+                if(result){
+                  //var obj = jQuery.parseJSON(result);
+                  $('#edit-field-section-attribute options').remove();
+                  $('#edit-field-section-attribute').html(new Option('- Select a value -', '_none'));
+                  $.each(result, function(key,value) {
+                    $('#edit-field-section-attribute').append(new Option(value, key));
+                    $('#edit-field-section-attribute').removeAttr('disabled');
+                    
+                  }); 
+                  
+                  //$('#edit-field-section-attribute').
+                }
+                else{
+                 
+                  
+                }
+                
+                
+              }
+            });
+          }
+
+          
+           
+        });
+      
+
+
 
           function getPerformanceIndex(value){
 
