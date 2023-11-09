@@ -18,7 +18,8 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\webform\WebformSubmissionInterface;
 use Drupal\Core\Site\Settings;
 use Drupal\user\Entity\User;
-
+use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\HtmlCommand;
 
 
 
@@ -55,25 +56,76 @@ function niv_form_user_form_alter(&$form, FormStateInterface $form_state, $form_
   
 }
 
-function _niv_suggestion_validate(&$form, FormStateInterface $form_state){
+/*function _niv_suggestion_validate(&$form, FormStateInterface $form_state){
 
-  
+ //dump($form_state);
+  $errors = $form_state->getErrors();
+  if(isset($errors['field_selected_attribute_value][0][value'])){
+   // echo "iam in";
+    $form_state->setErrorByName('field_section_attribute','Attribute field is required ');
+    unset($errors['field_selected_attribute_value][0][value']);
+  }
+  die;
   $attribute = $form_state->getValue('field_selected_attribute_value');
   $form_state->setValue('field_section_attribute',$attribute);
   
 
+}*/
+ function loadAttributesCallback(array &$form, FormStateInterface $form_state) {
+  // Return the prepared textfield.
+  
+  $values = $form_state->getValues();
+  $formType = $values['field_form_type'][0]['value'];
+  $section = $values['field_suggestion_section'][0]['value'];
+  $attributesKey = ($formType=='parent') ? 'home_section_attributes':'school_section_attributes';
+  $attributesArray = Settings::get($attributesKey);
+  $response = $attributesArray[$section];
+  $html = '<option value="_none">- Select a value -</option>';
+  if(!empty($formType) && !empty($section)){
+  foreach($response as $key=>$value){
+    $html.='<option value="'.$key.'">'.$value.'</option>';
+  }
 }
-
+  //$form['field_section_attribute']['widget']['#options'] = $response;
+  $response = new AjaxResponse();
+//$response->addCommand(new \Drupal\Core\Ajax\ReplaceCommand('#edit-field-section-attribute', 'FUCKING JOKE'));
+$response->addCommand(new HtmlCommand('#edit-field-section-attribute', $html));
+return $response;
+}
 function niv_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
   
   
   $roles = \Drupal::currentUser()->getRoles();
 if($form_id == 'node_new_suggestions_form'){
+
+  //$form['field_section_attribute']['widget']['#options'] = ['_none'=>'- Select a value -'];
   
-  array_unshift($form['#validate'],'_niv_suggestion_validate');
+  $form['field_form_type']['widget']['#ajax'] =  [
+    'callback' => 'loadAttributesCallback', // don't forget :: when calling a class method.
+    //'callback' => [$this, 'myAjaxCallback'], //alternative notation
+    'disable-refocus' => FALSE, // Or TRUE to prevent re-focusing on the triggering element.
+    'event' => 'change',
+    'progress' => [
+      'type' => 'throbber',
+      'message' => t('Loading attributes...'),
+    ],
+  ];
+
+  $form['field_suggestion_section']['widget']['#ajax'] =  [
+    'callback' => 'loadAttributesCallback', // don't forget :: when calling a class method.
+    //'callback' => [$this, 'myAjaxCallback'], //alternative notation
+    'disable-refocus' => FALSE, // Or TRUE to prevent re-focusing on the triggering element.
+    'event' => 'change',
+    'progress' => [
+      'type' => 'throbber',
+      'message' => t('Loading attributes...'),
+    ],
+  ];
+  
+  //array_unshift($form['#validate'],'_niv_suggestion_validate');
   $form['field_section_attribute']['#disabled'] = TRUE;
-  $form['field_selected_attribute_value']['#attributes']['class'] = 'hide';
+  
   //dump($form);
   //die;
    

@@ -4,6 +4,8 @@
     
         attach: function (context, settings) {
 
+         // getAttributesBySection();
+
 
           var current = location.pathname;
               $('.registration-links  a').each(function(){
@@ -14,16 +16,29 @@
               }
           });
 
-          $('select#edit-field-section-attribute').on('change',function(){
-
-            var attribute =  $('#edit-field-section-attribute').val();
-            
-            $('#edit-field-selected-attribute-value-0-value').val(attribute) ;
-
-          });
+        
           $('select#edit-field-form-type,select#edit-field-suggestion-section').on('change',function(){
             
             var section = $('#edit-field-suggestion-section').val();
+            var formtype = $('#edit-field-form-type').val();
+            //alert(formtype);
+            //alert(section);
+            if(section !='_none' && formtype != '_none'){
+
+              $('#edit-field-section-attribute').removeAttr('disabled','disabled');
+          
+          }
+          else{
+            $('#edit-field-section-attribute').attr('disabled','disabled');
+          }
+
+          
+           
+        });
+      
+
+        function getAttributesBySection(){
+          var section = $('#edit-field-suggestion-section').val();
             var formtype = $('#edit-field-form-type').val();
             //alert(formtype);
             //alert(section);
@@ -59,12 +74,7 @@
               }
             });
           }
-
-          
-           
-        });
-      
-
+        }
 
 
           function getPerformanceIndex(value){

@@ -311,8 +311,6 @@ background: linear-gradient(45deg,  #1e5799 0%,#7db9e8 100%); /* W3C, IE10+, FF1
 .user-register-form .form-item-name{
   display:none;
 }
-.hide.js-form-wrapper{
-  display:none;
-}
+
 
 	
