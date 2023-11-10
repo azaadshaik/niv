@@ -20,6 +20,7 @@ use Drupal\Core\Site\Settings;
 use Drupal\user\Entity\User;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\HtmlCommand;
+use Drupal\Core\Ajax\ReplaceCommand;
 
 
 
@@ -56,11 +57,13 @@ function niv_form_user_form_alter(&$form, FormStateInterface $form_state, $form_
   
 }
 
-/*function _niv_suggestion_validate(&$form, FormStateInterface $form_state){
+function _niv_suggestion_validate(&$form, FormStateInterface $form_state){
 
- //dump($form_state);
-  $errors = $form_state->getErrors();
-  if(isset($errors['field_selected_attribute_value][0][value'])){
+ dump($form_state);
+ dump($form);
+ die;
+  $values = $form_state->getValues();
+  if($values['field_section_attribute'][0]['value']){
    // echo "iam in";
     $form_state->setErrorByName('field_section_attribute','Attribute field is required ');
     unset($errors['field_selected_attribute_value][0][value']);
@@ -70,7 +73,7 @@ function niv_form_user_form_alter(&$form, FormStateInterface $form_state, $form_
   $form_state->setValue('field_section_attribute',$attribute);
   
 
-}*/
+}
  function loadAttributesCallback(array &$form, FormStateInterface $form_state) {
   // Return the prepared textfield.
   
@@ -79,7 +82,19 @@ function niv_form_user_form_alter(&$form, FormStateInterface $form_state, $form_
   $section = $values['field_suggestion_section'][0]['value'];
   $attributesKey = ($formType=='parent') ? 'home_section_attributes':'school_section_attributes';
   $attributesArray = Settings::get($attributesKey);
-  $response = $attributesArray[$section];
+  $response['_none'] = '- Select a value -';
+  foreach($attributesArray[$section] as $key=>$value){
+    $response[$key] = $value;
+  }
+ // $response = $attributesArray[$section];
+  
+  
+  $form['field_section_attribute']['widget']['#options'] = $response;
+  $form['field_section_attribute']['#disabled'] = FALSE;
+  //$form['field_section_attribute']['#validated'] = TRUE;
+  $form_state->setRebuild(TRUE);
+  return $form['field_section_attribute'];
+
   $html = '<option value="_none">- Select a value -</option>';
   if(!empty($formType) && !empty($section)){
   foreach($response as $key=>$value){
@@ -89,7 +104,8 @@ function niv_form_user_form_alter(&$form, FormStateInterface $form_state, $form_
   //$form['field_section_attribute']['widget']['#options'] = $response;
   $response = new AjaxResponse();
 //$response->addCommand(new \Drupal\Core\Ajax\ReplaceCommand('#edit-field-section-attribute', 'FUCKING JOKE'));
-$response->addCommand(new HtmlCommand('#edit-field-section-attribute', $html));
+//$response->addCommand(new HtmlCommand('#edit-field-section-attribute', $html));
+$response->addCommand(new ReplaceCommand(NULL, $form));
 return $response;
 }
 function niv_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
@@ -99,12 +115,17 @@ function niv_form_node_form_alter(&$form, FormStateInterface $form_state, $form_
   $roles = \Drupal::currentUser()->getRoles();
 if($form_id == 'node_new_suggestions_form'){
 
-  //$form['field_section_attribute']['widget']['#options'] = ['_none'=>'- Select a value -'];
+  
+ // $form['field_section_attribute']['widget']['#options'] = ['_none'=>'- Select a value -'];
+  $form['field_section_attribute']['#prefix'] = '<div id="edit-output">';
+  $form['field_section_attribute']['#suffix'] = '</div>';
+  $form['field_section_attribute']['#attributes']['class'][] = 'fucking-select';
   
   $form['field_form_type']['widget']['#ajax'] =  [
     'callback' => 'loadAttributesCallback', // don't forget :: when calling a class method.
     //'callback' => [$this, 'myAjaxCallback'], //alternative notation
     'disable-refocus' => FALSE, // Or TRUE to prevent re-focusing on the triggering element.
+    'wrapper' => 'edit-output',
     'event' => 'change',
     'progress' => [
       'type' => 'throbber',
@@ -116,6 +137,7 @@ if($form_id == 'node_new_suggestions_form'){
     'callback' => 'loadAttributesCallback', // don't forget :: when calling a class method.
     //'callback' => [$this, 'myAjaxCallback'], //alternative notation
     'disable-refocus' => FALSE, // Or TRUE to prevent re-focusing on the triggering element.
+   'wrapper' => 'edit-output',
     'event' => 'change',
     'progress' => [
       'type' => 'throbber',
@@ -124,7 +146,7 @@ if($form_id == 'node_new_suggestions_form'){
   ];
   
   //array_unshift($form['#validate'],'_niv_suggestion_validate');
-  $form['field_section_attribute']['#disabled'] = TRUE;
+  //$form['field_section_attribute']['#disabled'] = TRUE;
   
   //dump($form);
   //die;

@@ -21,11 +21,13 @@
             
             var section = $('#edit-field-suggestion-section').val();
             var formtype = $('#edit-field-form-type').val();
-            //alert(formtype);
-            //alert(section);
+            console.log(section);
+            console.log(formtype);
             if(section !='_none' && formtype != '_none'){
 
-              $('#edit-field-section-attribute').removeAttr('disabled','disabled');
+              console.log('iam in');
+              $('select[name=field_section_attribute]').removeAttr('disabled');
+              return;
           
           }
           else{
