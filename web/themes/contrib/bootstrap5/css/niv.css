@@ -103,6 +103,9 @@ form.user-pass #edit-actions.form-actions{    width: 100%;text-align: center;}
   #block-test .navbar-nav .nav-link:hover,
   #block-test .navbar-nav .nav-link.active{background-color: #3f51b5;border-radius: 3px;;} */
 .disabled{opacity:0.4;}
+.result_table_admin_view .details-wrapper {overflow-x:auto}
+.result_table_admin_view .details-wrapper table{font-size: 14px;}
+.result_table_admin_view .details-wrapper.card-body{padding:0.5em .5em;}
 .disabled:hover{box-shadow: none !important; cursor: none !important;}
 .disabled:hover > a{cursor: none !important;}
   .region-sidebar-first .navbar-nav .nav-link{background-color: #13388e;
